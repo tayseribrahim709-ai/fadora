@@ -1,0 +1,8 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <rect x="25" y="55" width="70" height="80" rx="12" fill="#f5e0d0" stroke="#d4b09a" stroke-width="2"/>
+  <rect x="30" y="45" width="60" height="18" rx="6" fill="#e8d0bc" stroke="#d4b09a" stroke-width="2"/>
+  <path d="M45 75 Q60 70 75 75" fill="none" stroke="#c4956a" stroke-width="1.5" opacity="0.4"/>
+  <path d="M45 83 Q60 78 75 83" fill="none" stroke="#c4956a" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="60" cy="105" r="6" fill="#ffd700" opacity="0.3"/>
+  <text x="60" y="120" text-anchor="middle" font-size="8" fill="#8b5a48" font-family="Arial">عسل</text>
+</svg>

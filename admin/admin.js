@@ -1,0 +1,549 @@
+const API = '';
+let token = localStorage.getItem('adminToken');
+let products = [];
+let offers = [];
+let media = [];
+
+// ============ Toast ============
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#D45050' : '#2C1810';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============ Auth ============
+function checkAuth() {
+  if (!token) {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboardScreen').style.display = 'none';
+    return false;
+  }
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboardScreen').style.display = 'block';
+  return true;
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('loginUser').value;
+  const password = document.getElementById('loginPass').value;
+  const errorEl = document.getElementById('loginError');
+  try {
+    const res = await fetch(`${API}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    if (!res.ok) {
+      errorEl.style.display = 'block';
+      errorEl.textContent = 'اسم المستخدم أو كلمة المرور خطأ';
+      return;
+    }
+    const data = await res.json();
+    localStorage.setItem('adminToken', data.token);
+    token = data.token;
+    errorEl.style.display = 'none';
+    checkAuth();
+    loadAll();
+  } catch {
+    errorEl.style.display = 'block';
+    errorEl.textContent = 'فشل الاتصال بالخادم';
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  localStorage.removeItem('adminToken');
+  token = null;
+  checkAuth();
+});
+
+// ============ API Helper ============
+async function api(method, url, body, isFormData = false) {
+  const opts = {
+    method,
+    headers: {}
+  };
+  if (token) opts.headers['Authorization'] = `Bearer ${token}`;
+  if (body) {
+    if (isFormData) {
+      opts.body = body;
+    } else {
+      opts.headers['Content-Type'] = 'application/json';
+      opts.body = JSON.stringify(body);
+    }
+  }
+  const res = await fetch(`${API}${url}`, opts);
+  if (res.status === 401) {
+    localStorage.removeItem('adminToken');
+    token = null;
+    checkAuth();
+    throw new Error('انتهت الجلسة');
+  }
+  return res.json();
+}
+
+// ============ Load All ============
+async function loadCategories() {
+  try {
+    const cats = await api('GET', '/api/categories');
+    const sel = document.getElementById('productCategory');
+    sel.innerHTML = '<option value="">اختر القسم</option>';
+    cats.forEach(c => {
+      sel.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+    });
+  } catch {}
+}
+
+async function loadAll() {
+  if (!token) return;
+  try {
+    const [stats, prods, offs, med, ords] = await Promise.all([
+      api('GET', '/api/stats'),
+      api('GET', '/api/products'),
+      api('GET', '/api/offers'),
+      api('GET', '/api/media'),
+      api('GET', '/api/orders')
+    ]);
+    products = prods;
+    offers = offs;
+    media = med;
+    orders = ords;
+    renderStats(stats);
+    renderProducts();
+    renderOffers();
+    renderMedia();
+    renderOrders();
+  } catch { }
+}
+
+// ============ Stats ============
+function renderStats(stats) {
+  document.getElementById('statProducts').textContent = stats.products;
+  document.getElementById('statOffers').textContent = stats.offers;
+  document.getElementById('statImages').textContent = stats.images;
+  document.getElementById('statVideos').textContent = stats.videos;
+  document.getElementById('statOrders').textContent = stats.orders || 0;
+}
+
+// ============ Products ============
+function renderProducts() {
+  const cats = {
+    face: 'تركيبات الوجه', body: 'تركيبات الجسم', moisturizing: 'ترطيب الجسم',
+    hair: 'منتجات الشعر', married: 'منتجات المتزوجات', weight: 'التسمين',
+    plasma: 'البلازما', pregnancy: 'آمنة للحوامل'
+  };
+  const tbody = document.getElementById('productsTableBody');
+  tbody.innerHTML = products.map(p => `
+    <tr>
+      <td><img src="${p.image}" alt="${p.name}" class="small-img"></td>
+      <td>${p.name}</td>
+      <td>${p.price}</td>
+      <td>${cats[p.category] || p.category}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-edit" onclick="editProduct('${p.id}')">تعديل</button>
+          <button class="btn-sm btn-delete" onclick="deleteProduct('${p.id}')">حذف</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openProductModal(product = null) {
+  document.getElementById('productModalTitle').textContent = product ? 'تعديل منتج' : 'إضافة منتج';
+  document.getElementById('productId').value = product ? product.id : '';
+  document.getElementById('productName').value = product ? product.name : '';
+  document.getElementById('productPrice').value = product ? product.price : '';
+  document.getElementById('productDesc').value = product ? product.description : '';
+  document.getElementById('productCategory').value = product ? product.category : '';
+  document.getElementById('productImage').value = '';
+  document.getElementById('productModal').classList.add('show');
+}
+
+document.getElementById('addProductBtn').addEventListener('click', () => openProductModal());
+document.getElementById('productModalClose').addEventListener('click', () => document.getElementById('productModal').classList.remove('show'));
+
+async function deleteProduct(id) {
+  if (!confirm('تأكيد حذف المنتج؟')) return;
+  await api('DELETE', `/api/products/${id}`);
+  showToast('تم حذف المنتج');
+  loadAll();
+}
+
+async function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (p) openProductModal(p);
+}
+
+document.getElementById('productForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('productId').value;
+  const fd = new FormData();
+  fd.append('name', document.getElementById('productName').value);
+  fd.append('price', document.getElementById('productPrice').value);
+  fd.append('description', document.getElementById('productDesc').value);
+  fd.append('category', document.getElementById('productCategory').value);
+  const imgFile = document.getElementById('productImage').files[0];
+  if (imgFile) fd.append('image', imgFile);
+
+  try {
+    if (id) {
+      await api('PUT', `/api/products/${id}`, fd, true);
+      showToast('تم تعديل المنتج');
+    } else {
+      await api('POST', '/api/products', fd, true);
+      showToast('تم إضافة المنتج');
+    }
+    document.getElementById('productModal').classList.remove('show');
+    loadAll();
+  } catch { }
+});
+
+// ============ Offers ============
+function renderOffers() {
+  const tbody = document.getElementById('offersTableBody');
+  tbody.innerHTML = offers.map(o => `
+    <tr>
+      <td>${o.image ? `<img src="${o.image}" alt="${o.title}" class="small-img">` : '—'}</td>
+      <td>${o.title}</td>
+      <td>${o.description.slice(0, 40)}${o.description.length > 40 ? '...' : ''}</td>
+      <td><span class="badge ${o.active ? 'badge-active' : 'badge-inactive'}">${o.active ? 'فعال' : 'غير فعال'}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-edit" onclick="editOffer('${o.id}')">تعديل</button>
+          <button class="btn-sm btn-delete" onclick="deleteOffer('${o.id}')">حذف</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openOfferModal(offer = null) {
+  document.getElementById('offerModalTitle').textContent = offer ? 'تعديل عرض' : 'إضافة عرض';
+  document.getElementById('offerId').value = offer ? offer.id : '';
+  document.getElementById('offerTitle').value = offer ? offer.title : '';
+  document.getElementById('offerDesc').value = offer ? offer.description : '';
+  document.getElementById('offerActive').checked = offer ? offer.active : true;
+  document.getElementById('offerImage').value = '';
+  document.getElementById('offerModal').classList.add('show');
+}
+
+document.getElementById('addOfferBtn').addEventListener('click', () => openOfferModal());
+document.getElementById('offerModalClose').addEventListener('click', () => document.getElementById('offerModal').classList.remove('show'));
+
+async function deleteOffer(id) {
+  if (!confirm('تأكيد حذف العرض؟')) return;
+  await api('DELETE', `/api/offers/${id}`);
+  showToast('تم حذف العرض');
+  loadAll();
+}
+
+async function editOffer(id) {
+  const o = offers.find(x => x.id === id);
+  if (o) openOfferModal(o);
+}
+
+document.getElementById('offerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('offerId').value;
+  const fd = new FormData();
+  fd.append('title', document.getElementById('offerTitle').value);
+  fd.append('description', document.getElementById('offerDesc').value);
+  fd.append('active', document.getElementById('offerActive').checked);
+  const imgFile = document.getElementById('offerImage').files[0];
+  if (imgFile) fd.append('image', imgFile);
+
+  try {
+    if (id) {
+      await api('PUT', `/api/offers/${id}`, fd, true);
+      showToast('تم تعديل العرض');
+    } else {
+      await api('POST', '/api/offers', fd, true);
+      showToast('تم إضافة العرض');
+    }
+    document.getElementById('offerModal').classList.remove('show');
+    loadAll();
+  } catch { }
+});
+
+// ============ Media ============
+function renderMedia() {
+  const grid = document.getElementById('mediaGrid');
+  grid.innerHTML = media.map(m => `
+    <div class="media-item">
+      ${m.type === 'video'
+        ? `<video src="${m.url}" muted></video>`
+        : `<img src="${m.url}" alt="${m.title}">`
+      }
+      <div class="media-info">
+        <span title="${m.title}">${m.title}</span>
+        <button onclick="deleteMedia('${m.id}')" title="حذف">&times;</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('addMediaBtn').addEventListener('click', () => document.getElementById('mediaModal').classList.add('show'));
+document.getElementById('mediaModalClose').addEventListener('click', () => document.getElementById('mediaModal').classList.remove('show'));
+
+async function deleteMedia(id) {
+  if (!confirm('تأكيد حذف الملف؟')) return;
+  await api('DELETE', `/api/media/${id}`);
+  showToast('تم حذف الملف');
+  loadAll();
+}
+
+document.getElementById('mediaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData();
+  fd.append('title', document.getElementById('mediaTitle').value);
+  fd.append('file', document.getElementById('mediaFile').files[0]);
+
+  try {
+    await api('POST', '/api/media', fd, true);
+    showToast('تم رفع الملف');
+    document.getElementById('mediaModal').classList.remove('show');
+    document.getElementById('mediaForm').reset();
+    loadAll();
+  } catch { }
+});
+
+// ============ Orders ============
+let orders = [];
+
+function renderOrders() {
+  const tbody = document.getElementById('ordersTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = orders.map((o, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${o.customer}</td>
+      <td>${o.phone}</td>
+      <td>${Array.isArray(o.products) ? o.products.join(', ') : o.products}</td>
+      <td>${o.total || '—'}</td>
+      <td><span class="badge badge-${o.status}">${getStatusLabel(o.status)}</span></td>
+      <td>${o.note || '—'}</td>
+      <td>${o.createdAt || '—'}</td>
+      <td class="actions-cell">
+        <button class="btn-sm" onclick="editOrder('${o.id}')">تعديل</button>
+        <button class="btn-sm btn-sm-danger" onclick="deleteOrder('${o.id}')">حذف</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function getStatusLabel(status) {
+  const map = { pending: 'قيد الانتظار', confirmed: 'مؤكد', shipped: 'تم الشحن', completed: 'مكتمل', cancelled: 'ملغي' };
+  return map[status] || status;
+}
+
+document.getElementById('addOrderBtn')?.addEventListener('click', () => {
+  document.getElementById('orderModalTitle').textContent = 'إضافة طلب';
+  document.getElementById('orderForm').reset();
+  document.getElementById('orderId').value = '';
+  document.getElementById('orderModal').classList.add('show');
+});
+document.getElementById('orderModalClose')?.addEventListener('click', () => document.getElementById('orderModal').classList.remove('show'));
+
+function editOrder(id) {
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('orderModalTitle').textContent = 'تعديل طلب';
+  document.getElementById('orderId').value = o.id;
+  document.getElementById('orderCustomer').value = o.customer;
+  document.getElementById('orderPhone').value = o.phone;
+  document.getElementById('orderProducts').value = Array.isArray(o.products) ? o.products.join(', ') : o.products;
+  document.getElementById('orderTotal').value = o.total || '';
+  document.getElementById('orderNote').value = o.note || '';
+  document.getElementById('orderStatus').value = o.status || 'pending';
+  document.getElementById('orderModal').classList.add('show');
+}
+
+async function deleteOrder(id) {
+  if (!confirm('تأكيد حذف الطلب؟')) return;
+  await api('DELETE', `/api/orders/${id}`);
+  showToast('تم حذف الطلب');
+  loadAll();
+}
+
+document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('orderId').value;
+  const body = {
+    customer: document.getElementById('orderCustomer').value,
+    phone: document.getElementById('orderPhone').value,
+    products: document.getElementById('orderProducts').value.split(',').map(s => s.trim()).filter(Boolean),
+    total: document.getElementById('orderTotal').value,
+    note: document.getElementById('orderNote').value,
+    status: document.getElementById('orderStatus').value
+  };
+  try {
+    if (id) {
+      await api('PUT', `/api/orders/${id}`, body);
+      showToast('تم تعديل الطلب');
+    } else {
+      await api('POST', '/api/orders', body);
+      showToast('تم إضافة الطلب');
+    }
+    document.getElementById('orderModal').classList.remove('show');
+    loadAll();
+  } catch { }
+});
+
+// ============ Reports ============
+let viewsChart = null;
+
+function loadReports() {
+  const data = getAnalytics();
+  document.getElementById('repPageViews').textContent = data.pageViews || 0;
+  document.getElementById('repWhatsAppClicks').textContent = data.whatsappClicks || 0;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('repTodayViews').textContent = data.daily?.[today]?.pageViews || 0;
+  const topProduct = Object.entries(data.productViews || {}).sort((a, b) => b[1] - a[1])[0];
+  document.getElementById('repTopProduct').textContent = topProduct ? `${topProduct[0]} (${topProduct[1]})` : '—';
+  renderChart(data.daily || {});
+}
+
+function getAnalytics() {
+  try {
+    const stored = localStorage.getItem('drg_analytics');
+    if (stored) return JSON.parse(stored);
+    return { pageViews: 120, whatsappClicks: 45, productViews: { 'سيروم الكلف': 12, 'تقشير الوجه': 8, 'تسمين عام': 6 }, daily: sampleDaily() };
+  } catch { return { pageViews: 120, whatsappClicks: 45, productViews: {}, daily: sampleDaily() }; }
+}
+
+function sampleDaily() {
+  const data = {};
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    data[key] = { pageViews: Math.floor(Math.random() * 20) + 5, whatsappClicks: Math.floor(Math.random() * 8) };
+  }
+  return data;
+}
+
+function renderChart(daily) {
+  const days = Object.keys(daily).sort().slice(-14);
+  const views = days.map(d => daily[d]?.pageViews || 0);
+  const clicks = days.map(d => daily[d]?.whatsappClicks || 0);
+  const ctx = document.getElementById('viewsChart')?.getContext('2d');
+  if (!ctx) return;
+  if (viewsChart) viewsChart.destroy();
+  viewsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days.map(d => d.slice(5)),
+      datasets: [
+        { label: 'مشاهدات', data: views, borderColor: '#C4956A', backgroundColor: 'rgba(196,149,106,0.1)', fill: true, tension: 0.4 },
+        { label: 'نقرات واتساب', data: clicks, borderColor: '#5A9A6A', backgroundColor: 'rgba(90,154,106,0.1)', fill: true, tension: 0.4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top', labels: { font: { family: 'Tajawal' } } } },
+      scales: { x: { ticks: { font: { family: 'Tajawal' } } }, y: { beginAtZero: true } }
+    }
+  });
+}
+
+document.getElementById('resetAnalyticsBtn')?.addEventListener('click', () => {
+  if (confirm('تأكيد مسح جميع الإحصائيات؟')) {
+    localStorage.removeItem('drg_analytics');
+    loadReports();
+    showToast('تم مسح الإحصائيات');
+  }
+});
+
+// ============ Settings ============
+async function loadSettings() {
+  try {
+    const s = await api('GET', '/api/settings');
+    document.getElementById('setInstagram').value = s.social?.instagram || '';
+    document.getElementById('setTwitter').value = s.social?.twitter || '';
+    document.getElementById('setSnapchat').value = s.social?.snapchat || '';
+    document.getElementById('setFacebook').value = s.social?.facebook || '';
+    document.getElementById('setBankName').value = s.payment?.bankName || '';
+    document.getElementById('setAccountName').value = s.payment?.accountName || '';
+    document.getElementById('setAccountNumber').value = s.payment?.accountNumber || '';
+    document.getElementById('setCashOnDelivery').checked = s.payment?.cashOnDelivery !== false;
+  } catch {}
+}
+
+document.getElementById('saveSettingsBtn')?.addEventListener('click', async () => {
+  const body = {
+    social: {
+      instagram: document.getElementById('setInstagram').value,
+      twitter: document.getElementById('setTwitter').value,
+      snapchat: document.getElementById('setSnapchat').value,
+      facebook: document.getElementById('setFacebook').value,
+      whatsapp: '249924643848'
+    },
+    payment: {
+      bankName: document.getElementById('setBankName').value,
+      accountName: document.getElementById('setAccountName').value,
+      accountNumber: document.getElementById('setAccountNumber').value,
+      cashOnDelivery: document.getElementById('setCashOnDelivery').checked
+    }
+  };
+  try {
+    await api('PUT', '/api/settings', body);
+    showToast('تم حفظ الإعدادات');
+  } catch {}
+});
+
+// ============ Notification ============
+document.getElementById('sendNotifBtn')?.addEventListener('click', async () => {
+  const title = document.getElementById('notifTitle').value;
+  const body = document.getElementById('notifBody').value;
+  if (!title || !body) { showToast('يرجى ملء الحقول', true); return; }
+  try {
+    await api('POST', '/api/notify-offer', { title, body });
+    showToast('تم إرسال الإشعار');
+    document.getElementById('notifTitle').value = '';
+    document.getElementById('notifBody').value = '';
+  } catch {
+    showToast('فشل إرسال الإشعار', true);
+  }
+});
+
+// ============ Subscribe to Push ============
+async function subscribePush() {
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') return;
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array('BEl62iZR8e8mJp8kRXKJQwZx0g9KzgJmXq8vZ6f5d3s2a1b0c9d8e7f6g5h4i3j2k1l0m9n8o7p6q5r4s3t2u1v0w')
+    });
+    await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sub)
+    });
+  } catch {}
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
+
+// ============ Tabs ============
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+// ============ Init ============
+checkAuth();
+if (token) { loadAll(); loadCategories(); loadSettings(); loadReports(); subscribePush(); }

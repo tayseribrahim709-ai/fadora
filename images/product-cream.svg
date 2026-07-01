@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <rect x="25" y="60" width="70" height="80" rx="8" fill="#f5e6d3" stroke="#d4b89a" stroke-width="2"/>
+  <rect x="35" y="50" width="50" height="18" rx="5" fill="#e8d5c4" stroke="#d4b89a" stroke-width="2"/>
+  <rect x="30" y="65" width="60" height="12" rx="3" fill="#c4956a" opacity="0.3"/>
+  <ellipse cx="60" cy="100" rx="20" ry="8" fill="#c4956a" opacity="0.2"/>
+  <circle cx="60" cy="95" r="6" fill="#c4956a" opacity="0.4"/>
+  <path d="M45 30 Q60 10 75 30" fill="none" stroke="#c4956a" stroke-width="2"/>
+  <circle cx="60" cy="25" r="4" fill="#c4956a"/>
+  <text x="60" y="118" text-anchor="middle" font-size="9" fill="#8b6f5c" font-family="Arial">ترطيب</text>
+</svg>

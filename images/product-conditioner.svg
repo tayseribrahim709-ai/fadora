@@ -1,0 +1,8 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <rect x="32" y="50" width="56" height="85" rx="8" fill="#e8d8c8" stroke="#c8b09a" stroke-width="2"/>
+  <path d="M45 50 L48 28 L72 28 L75 50" fill="#d8c8b4" stroke="#c8b09a" stroke-width="2"/>
+  <rect x="52" y="15" width="16" height="17" rx="12" fill="#c8b09a"/>
+  <path d="M40 60 Q60 55 80 60" fill="none" stroke="#c4956a" stroke-width="1" opacity="0.4"/>
+  <path d="M40 68 Q60 63 80 68" fill="none" stroke="#c4956a" stroke-width="1" opacity="0.4"/>
+  <text x="60" y="120" text-anchor="middle" font-size="7" fill="#7a5a48" font-family="Arial">مارولا</text>
+</svg>

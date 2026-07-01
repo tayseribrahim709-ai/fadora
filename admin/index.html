@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة - Fadora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">&#10086;</div>
+      <h2>لوحة الإدارة</h2>
+      <p class="login-sub">تسجيل الدخول إلى نظام إدارة Fadora</p>
+      <form id="loginForm">
+        <input type="text" id="loginUser" placeholder="اسم المستخدم" required>
+        <input type="password" id="loginPass" placeholder="كلمة المرور" required>
+        <p class="login-error" id="loginError"></p>
+        <button type="submit" class="btn-admin">تسجيل الدخول</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboardScreen" style="display: none;">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-logo">
+          <span>&#10086;</span>
+          <h2>Fadora</h2>
+        </div>
+        <nav class="admin-nav">
+          <button class="nav-btn active" data-tab="dashboard">&#128202; لوحة التحكم</button>
+          <button class="nav-btn" data-tab="products">&#128722; المنتجات</button>
+          <button class="nav-btn" data-tab="offers">&#127881; العروض</button>
+          <button class="nav-btn" data-tab="orders">&#128230; الطلبات</button>
+          <button class="nav-btn" data-tab="media">&#128247; الوسائط</button>
+          <button class="nav-btn" data-tab="reports">&#128200; التقارير</button>
+          <button class="nav-btn" data-tab="settings">&#9881; الإعدادات</button>
+        </nav>
+        <button id="logoutBtn" class="btn-logout">&#128682; خروج</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- Dashboard Tab -->
+      <section class="admin-tab active" id="tab-dashboard">
+        <h2>لوحة التحكم</h2>
+        <div class="stats-grid" id="statsContainer">
+          <div class="stat-card"><div class="stat-num" id="statProducts">0</div><div class="stat-label">المنتجات</div></div>
+          <div class="stat-card"><div class="stat-num" id="statOffers">0</div><div class="stat-label">العروض النشطة</div></div>
+          <div class="stat-card"><div class="stat-num" id="statImages">0</div><div class="stat-label">الصور المرفوعة</div></div>
+          <div class="stat-card"><div class="stat-num" id="statVideos">0</div><div class="stat-label">الفيديوهات</div></div>
+          <div class="stat-card"><div class="stat-num" id="statOrders">0</div><div class="stat-label">الطلبات</div></div>
+        </div>
+        <div class="dashboard-links">
+          <a href="https://wa.me/249924643848" target="_blank" class="quick-link">&#128241; فتح واتساب</a>
+          <a href="../index.html" target="_blank" class="quick-link">&#127760; فتح الموقع</a>
+        </div>
+      </section>
+
+      <!-- Products Tab -->
+      <section class="admin-tab" id="tab-products">
+        <div class="tab-header">
+          <h2>إدارة المنتجات</h2>
+          <button class="btn-admin" id="addProductBtn">+ إضافة منتج</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>الاسم</th>
+                <th>السعر</th>
+                <th>القسم</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Offers Tab -->
+      <section class="admin-tab" id="tab-offers">
+        <div class="tab-header">
+          <h2>إدارة العروض</h2>
+          <button class="btn-admin" id="addOfferBtn">+ إضافة عرض</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>العنوان</th>
+                <th>الوصف</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="offersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Media Tab -->
+      <section class="admin-tab" id="tab-media">
+        <div class="tab-header">
+          <h2>الوسائط</h2>
+          <button class="btn-admin" id="addMediaBtn">+ رفع ملف</button>
+        </div>
+        <div class="media-grid" id="mediaGrid"></div>
+      </section>
+
+      <!-- Orders Tab -->
+      <section class="admin-tab" id="tab-orders">
+        <div class="tab-header">
+          <h2>إدارة الطلبات</h2>
+          <button class="btn-admin" id="addOrderBtn">+ إضافة طلب</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>العميل</th>
+                <th>الجوال</th>
+                <th>المنتجات</th>
+                <th>الإجمالي</th>
+                <th>الحالة</th>
+                <th>ملاحظات</th>
+                <th>التاريخ</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Reports Tab -->
+      <section class="admin-tab" id="tab-reports">
+        <h2>التقارير</h2>
+        <div class="stats-grid" id="reportStats">
+          <div class="stat-card"><div class="stat-num" id="repPageViews">0</div><div class="stat-label">مشاهدات الصفحة</div></div>
+          <div class="stat-card"><div class="stat-num" id="repWhatsAppClicks">0</div><div class="stat-label">نقرات واتساب</div></div>
+          <div class="stat-card"><div class="stat-num" id="repTodayViews">0</div><div class="stat-label">اليوم</div></div>
+          <div class="stat-card"><div class="stat-num" id="repTopProduct">—</div><div class="stat-label">المنتج الأكثر طلباً</div></div>
+        </div>
+        <div class="chart-container">
+          <canvas id="viewsChart" height="200"></canvas>
+        </div>
+        <div class="dashboard-links" style="margin-top:16px">
+          <button class="btn-admin" id="resetAnalyticsBtn" style="width:auto;background:var(--danger)">مسح الإحصائيات</button>
+        </div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section class="admin-tab" id="tab-settings">
+        <h2>الإعدادات</h2>
+        <div class="settings-form">
+          <h3>روابط التواصل الاجتماعي</h3>
+          <div class="form-row">
+            <input type="text" id="setInstagram" placeholder="انستغرام">
+            <input type="text" id="setTwitter" placeholder="تويتر">
+          </div>
+          <div class="form-row">
+            <input type="text" id="setSnapchat" placeholder="سناب شات">
+            <input type="text" id="setFacebook" placeholder="فيسبوك">
+          </div>
+          <h3>معلومات الدفع</h3>
+          <div class="form-row">
+            <input type="text" id="setBankName" placeholder="اسم البنك">
+            <input type="text" id="setAccountName" placeholder="اسم الحساب">
+          </div>
+          <input type="text" id="setAccountNumber" placeholder="رقم الحساب">
+          <label class="checkbox-label" style="margin:12px 0">
+            <input type="checkbox" id="setCashOnDelivery"> الدفع عند الاستلام متاح
+          </label>
+          <button class="btn-admin" id="saveSettingsBtn" style="width:auto">حفظ الإعدادات</button>
+        </div>
+        <hr style="margin:32px 0;border-color:rgba(196,149,106,0.12)">
+        <h3>إرسال إشعار للعملاء</h3>
+        <p style="color:var(--text-light);margin-bottom:16px;font-size:0.95rem">عند إضافة عرض جديد، يمكنك إشعار جميع العملاء المسجلين</p>
+        <div class="form-row">
+          <input type="text" id="notifTitle" placeholder="عنوان الإشعار (مثال: عرض جديد 🎉)">
+          <input type="text" id="notifBody" placeholder="نص الإشعار">
+        </div>
+        <button class="btn-admin" id="sendNotifBtn" style="width:auto;background:var(--secondary)">إرسال الإشعار</button>
+      </section>
+    </main>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <span class="modal-close" id="productModalClose">&times;</span>
+      <h3 id="productModalTitle">إضافة منتج</h3>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="form-row">
+          <input type="text" id="productName" placeholder="اسم المنتج" required>
+          <input type="text" id="productPrice" placeholder="السعر (مثال: ٢٩٩ ريال)" required>
+        </div>
+        <textarea id="productDesc" rows="3" placeholder="وصف المنتج" required></textarea>
+        <div class="form-row">
+          <select id="productCategory" required>
+            <option value="">اختر القسم</option>
+          </select>
+          <input type="file" id="productImage" accept="image/*">
+        </div>
+        <p class="form-note" id="productImageNote">اترك الصورة فارغة لاستخدام الصورة الافتراضية</p>
+        <button type="submit" class="btn-admin">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Offer Modal -->
+  <div class="modal" id="offerModal">
+    <div class="modal-content">
+      <span class="modal-close" id="offerModalClose">&times;</span>
+      <h3 id="offerModalTitle">إضافة عرض</h3>
+      <form id="offerForm">
+        <input type="hidden" id="offerId">
+        <input type="text" id="offerTitle" placeholder="عنوان العرض" required>
+        <textarea id="offerDesc" rows="3" placeholder="وصف العرض" required></textarea>
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="offerActive" checked> فعال
+          </label>
+          <input type="file" id="offerImage" accept="image/*">
+        </div>
+        <button type="submit" class="btn-admin">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Media Modal -->
+  <div class="modal" id="mediaModal">
+    <div class="modal-content">
+      <span class="modal-close" id="mediaModalClose">&times;</span>
+      <h3>رفع ملف</h3>
+      <form id="mediaForm">
+        <input type="text" id="mediaTitle" placeholder="عنوان الملف" required>
+        <input type="file" id="mediaFile" accept="image/*,video/*" required>
+        <p class="form-note">يدعم الصور (JPEG, PNG, WEBP) والفيديو (MP4, WebM)</p>
+        <button type="submit" class="btn-admin">رفع</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <span class="modal-close" id="orderModalClose">&times;</span>
+      <h3 id="orderModalTitle">إضافة طلب</h3>
+      <form id="orderForm">
+        <input type="hidden" id="orderId">
+        <div class="form-row">
+          <input type="text" id="orderCustomer" placeholder="اسم العميل" required>
+          <input type="text" id="orderPhone" placeholder="رقم الجوال (مثال: 249912345678)" required>
+        </div>
+        <div class="form-row">
+          <input type="text" id="orderProducts" placeholder="المنتجات (مفصولة بفاصلة)" required>
+          <input type="text" id="orderTotal" placeholder="الإجمالي (مثال: 30,000)">
+        </div>
+        <textarea id="orderNote" rows="2" placeholder="ملاحظات"></textarea>
+        <div class="form-row">
+          <select id="orderStatus" required>
+            <option value="pending">قيد الانتظار</option>
+            <option value="confirmed">مؤكد</option>
+            <option value="shipped">تم الشحن</option>
+            <option value="completed">مكتمل</option>
+            <option value="cancelled">ملغي</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-admin">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

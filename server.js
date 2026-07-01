@@ -1,0 +1,624 @@
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
+const { Pool } = require('pg');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = 'fadora-secret-key-2026';
+const DB_PATH = path.join(__dirname, 'data', 'db.json');
+const USE_PG = !!process.env.DATABASE_URL;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ============ PostgreSQL (production) ============
+let pool;
+if (USE_PG) {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+}
+
+async function pgQuery(text, params) {
+  if (!pool) return null;
+  try {
+    const result = await pool.query(text, params);
+    return result;
+  } catch (err) {
+    console.error('PG Error:', err.message);
+    throw err;
+  }
+}
+
+async function initPG() {
+  await pgQuery(`CREATE TABLE IF NOT EXISTS settings (id SERIAL PRIMARY KEY, data JSONB NOT NULL DEFAULT '{}')`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS admin (id SERIAL PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, key TEXT NOT NULL UNIQUE, name TEXT NOT NULL)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT NOT NULL, description TEXT, price TEXT, category TEXT, image TEXT, whatsapp TEXT)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS offers (id TEXT PRIMARY KEY, title TEXT, description TEXT, image TEXT, active BOOLEAN DEFAULT true, created_at TEXT)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, type TEXT, url TEXT, title TEXT, created_at TEXT)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS orders (id TEXT PRIMARY KEY, customer TEXT, phone TEXT, products JSONB DEFAULT '[]', total TEXT, status TEXT DEFAULT 'pending', note TEXT DEFAULT '', created_at TEXT)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS push_subscriptions (id SERIAL PRIMARY KEY, endpoint TEXT UNIQUE, data JSONB)`);
+
+  const adminCount = await pgQuery('SELECT COUNT(*) FROM admin');
+  if (parseInt(adminCount.rows[0].count) === 0) {
+    const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    await pgQuery('INSERT INTO admin (username, password) VALUES ($1, $2)', [seed.admin.username, seed.admin.password]);
+    await pgQuery('INSERT INTO settings (data) VALUES ($1)', [JSON.stringify(seed.settings || {})]);
+    for (const c of (seed.categories || [])) {
+      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.key, c.name]);
+    }
+    for (const p of (seed.products || [])) {
+      await pgQuery('INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING', [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
+    }
+    for (const o of (seed.offers || [])) {
+      await pgQuery('INSERT INTO offers (id, title, description, image, active, created_at) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING', [o.id, o.title, o.description, o.image, o.active, o.createdAt]);
+    }
+    for (const m of (seed.media || [])) {
+      await pgQuery('INSERT INTO media (id, type, url, title, created_at) VALUES ($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING', [m.id, m.type, m.url, m.title, m.createdAt]);
+    }
+    console.log('✓ PostgreSQL seeded from db.json');
+  }
+}
+
+// ============ JSON fallback (local dev) ============
+function readDB() {
+  let raw = fs.readFileSync(DB_PATH, 'utf-8');
+  raw = raw.replace(/^\uFEFF/, '');
+  return JSON.parse(raw);
+}
+
+function writeDB(data) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+// ============ Unified DB helpers ============
+async function getSettings() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT data FROM settings LIMIT 1');
+    return r.rows.length ? r.rows[0].data : { social: {}, payment: {} };
+  }
+  return readDB().settings || { social: {}, payment: {} };
+}
+
+async function saveSettings(data) {
+  if (USE_PG) {
+    await pgQuery('UPDATE settings SET data = $1 WHERE id = 1', [JSON.stringify(data)]);
+  }
+  const db = readDB();
+  db.settings = data;
+  writeDB(db);
+  return data;
+}
+
+async function getAdmin() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT username, password FROM admin LIMIT 1');
+    return r.rows[0] || { username: 'admin', password: '' };
+  }
+  return readDB().admin;
+}
+
+async function updatePassword(hash) {
+  if (USE_PG) {
+    await pgQuery('UPDATE admin SET password = $1 WHERE id = 1', [hash]);
+    return;
+  }
+  const db = readDB();
+  db.admin.password = hash;
+  writeDB(db);
+}
+
+async function getCategories() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT key, name FROM categories ORDER BY id');
+    return r.rows;
+  }
+  return readDB().categories || [];
+}
+
+async function getProducts(category) {
+  if (USE_PG) {
+    if (category) {
+      const r = await pgQuery('SELECT * FROM products WHERE category = $1 ORDER BY id', [category]);
+      return r.rows;
+    }
+    const r = await pgQuery('SELECT * FROM products ORDER BY id');
+    return r.rows;
+  }
+  const db = readDB();
+  if (category) return db.products.filter(p => p.category === category);
+  return db.products;
+}
+
+async function createProduct(data) {
+  if (USE_PG) {
+    await pgQuery('INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7)', [data.id, data.name, data.description, data.price, data.category, data.image, data.whatsapp]);
+    return data;
+  }
+  const db = readDB();
+  db.products.push(data);
+  writeDB(db);
+  return data;
+}
+
+async function updateProduct(id, data) {
+  if (USE_PG) {
+    const sets = []; const vals = []; let i = 1;
+    for (const k of ['name', 'description', 'price', 'category', 'image', 'whatsapp']) {
+      if (data[k] !== undefined) { sets.push(`${k}=$${i}`); vals.push(data[k]); i++; }
+    }
+    if (sets.length) {
+      vals.push(id);
+      await pgQuery(`UPDATE products SET ${sets.join(',')} WHERE id=$${i}`, vals);
+    }
+    const r = await pgQuery('SELECT * FROM products WHERE id=$1', [id]);
+    return r.rows[0];
+  }
+  const db = readDB();
+  const idx = db.products.findIndex(p => p.id === id);
+  if (idx === -1) return null;
+  db.products[idx] = { ...db.products[idx], ...data };
+  writeDB(db);
+  return db.products[idx];
+}
+
+async function deleteProduct(id) {
+  if (USE_PG) {
+    const r = await pgQuery('DELETE FROM products WHERE id=$1 RETURNING id', [id]);
+    return r.rows.length > 0;
+  }
+  const db = readDB();
+  const idx = db.products.findIndex(p => p.id === id);
+  if (idx === -1) return false;
+  db.products.splice(idx, 1);
+  writeDB(db);
+  return true;
+}
+
+async function getOffers() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT * FROM offers ORDER BY id');
+    return r.rows;
+  }
+  return readDB().offers;
+}
+
+async function createOffer(data) {
+  if (USE_PG) {
+    await pgQuery('INSERT INTO offers (id, title, description, image, active, created_at) VALUES ($1,$2,$3,$4,$5,$6)', [data.id, data.title, data.description, data.image, data.active, data.createdAt]);
+    return data;
+  }
+  const db = readDB();
+  db.offers.push(data);
+  writeDB(db);
+  return data;
+}
+
+async function updateOffer(id, data) {
+  if (USE_PG) {
+    const sets = []; const vals = []; let i = 1;
+    for (const k of ['title', 'description', 'image', 'active']) {
+      if (data[k] !== undefined) { sets.push(`${k}=$${i}`); vals.push(data[k]); i++; }
+    }
+    if (data.createdAt !== undefined) { sets.push(`created_at=$${i}`); vals.push(data.createdAt); i++; }
+    if (sets.length) { vals.push(id); await pgQuery(`UPDATE offers SET ${sets.join(',')} WHERE id=$${i}`, vals); }
+    const r = await pgQuery('SELECT * FROM offers WHERE id=$1', [id]);
+    return r.rows[0];
+  }
+  const db = readDB();
+  const idx = db.offers.findIndex(o => o.id === id);
+  if (idx === -1) return null;
+  db.offers[idx] = { ...db.offers[idx], ...data };
+  writeDB(db);
+  return db.offers[idx];
+}
+
+async function deleteOffer(id) {
+  if (USE_PG) {
+    const r = await pgQuery('DELETE FROM offers WHERE id=$1 RETURNING id', [id]);
+    return r.rows.length > 0;
+  }
+  const db = readDB();
+  const idx = db.offers.findIndex(o => o.id === id);
+  if (idx === -1) return false;
+  db.offers.splice(idx, 1);
+  writeDB(db);
+  return true;
+}
+
+async function getMedia() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT * FROM media ORDER BY id');
+    return r.rows;
+  }
+  return readDB().media;
+}
+
+async function createMedia(data) {
+  if (USE_PG) {
+    await pgQuery('INSERT INTO media (id, type, url, title, created_at) VALUES ($1,$2,$3,$4,$5)', [data.id, data.type, data.url, data.title, data.createdAt]);
+    return data;
+  }
+  const db = readDB();
+  db.media.push(data);
+  writeDB(db);
+  return data;
+}
+
+async function deleteMedia(id) {
+  if (USE_PG) {
+    const r = await pgQuery('DELETE FROM media WHERE id=$1 RETURNING url', [id]);
+    return r.rows[0] || null;
+  }
+  const db = readDB();
+  const idx = db.media.findIndex(m => m.id === id);
+  if (idx === -1) return null;
+  const item = db.media[idx];
+  db.media.splice(idx, 1);
+  writeDB(db);
+  return item;
+}
+
+async function getOrders() {
+  if (USE_PG) {
+    const r = await pgQuery('SELECT * FROM orders ORDER BY id');
+    return r.rows.map(o => ({ ...o, products: typeof o.products === 'string' ? JSON.parse(o.products) : o.products }));
+  }
+  return readDB().orders || [];
+}
+
+async function createOrder(data) {
+  if (USE_PG) {
+    await pgQuery('INSERT INTO orders (id, customer, phone, products, total, status, note, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', [data.id, data.customer, data.phone, JSON.stringify(data.products), data.total, data.status, data.note, data.createdAt]);
+    return data;
+  }
+  const db = readDB();
+  db.orders = db.orders || [];
+  db.orders.push(data);
+  writeDB(db);
+  return data;
+}
+
+async function updateOrder(id, data) {
+  if (USE_PG) {
+    const sets = []; const vals = []; let i = 1;
+    for (const k of ['customer', 'phone', 'total', 'status', 'note']) {
+      if (data[k] !== undefined) { sets.push(`${k}=$${i}`); vals.push(data[k]); i++; }
+    }
+    if (data.products !== undefined) { sets.push(`products=$${i}`); vals.push(JSON.stringify(data.products)); i++; }
+    if (sets.length) { vals.push(id); await pgQuery(`UPDATE orders SET ${sets.join(',')} WHERE id=$${i}`, vals); }
+    const r = await pgQuery('SELECT * FROM orders WHERE id=$1', [id]);
+    return r.rows[0] ? { ...r.rows[0], products: typeof r.rows[0].products === 'string' ? JSON.parse(r.rows[0].products) : r.rows[0].products } : null;
+  }
+  const db = readDB();
+  const idx = (db.orders || []).findIndex(o => o.id === id);
+  if (idx === -1) return null;
+  db.orders[idx] = { ...db.orders[idx], ...data };
+  writeDB(db);
+  return db.orders[idx];
+}
+
+async function deleteOrder(id) {
+  if (USE_PG) {
+    const r = await pgQuery('DELETE FROM orders WHERE id=$1 RETURNING id', [id]);
+    return r.rows.length > 0;
+  }
+  const db = readDB();
+  const idx = (db.orders || []).findIndex(o => o.id === id);
+  if (idx === -1) return false;
+  db.orders.splice(idx, 1);
+  writeDB(db);
+  return true;
+}
+
+// ============ File Upload ============
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isVideo = file.mimetype.startsWith('video/');
+    const dir = isVideo ? path.join(__dirname, 'uploads', 'videos') : path.join(__dirname, 'uploads', 'images');
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}-${uuidv4().slice(0, 8)}${ext}`);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedImages = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedVideos = ['video/mp4', 'video/webm', 'video/ogg'];
+    if ([...allowedImages, ...allowedVideos].includes(file.mimetype)) return cb(null, true);
+    cb(new Error('صيغة الملف غير مدعومة'));
+  }
+});
+
+// ============ Auth Middleware ============
+function authMiddleware(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'غير مصرح' });
+  try {
+    req.admin = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ error: 'انتهت الجلسة' });
+  }
+}
+
+// ============ Auth Routes ============
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const admin = await getAdmin();
+    if (username !== admin.username || !bcrypt.compareSync(password, admin.password)) {
+      return res.status(401).json({ error: 'اسم المستخدم أو كلمة المرور خطأ' });
+    }
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/change-password', authMiddleware, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const admin = await getAdmin();
+    if (!bcrypt.compareSync(oldPassword, admin.password)) return res.status(400).json({ error: 'كلمة المرور الحالية خطأ' });
+    await updatePassword(bcrypt.hashSync(newPassword, 10));
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Settings Routes ============
+app.get('/api/settings', async (req, res) => {
+  try { res.json(await getSettings()); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.put('/api/settings', authMiddleware, async (req, res) => {
+  try { res.json(await saveSettings(req.body)); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Notification ============
+let pushSubscriptions = [];
+
+app.post('/api/subscribe', (req, res) => {
+  const sub = req.body;
+  if (sub && sub.endpoint) {
+    pushSubscriptions = pushSubscriptions.filter(s => s.endpoint !== sub.endpoint);
+    pushSubscriptions.push(sub);
+  }
+  res.json({ success: true, count: pushSubscriptions.length });
+});
+
+app.post('/api/notify-offer', authMiddleware, (req, res) => {
+  const { title, body } = req.body;
+  res.json({ success: true, sent: pushSubscriptions.length });
+});
+
+// ============ Categories Routes ============
+app.get('/api/categories', async (req, res) => {
+  try { res.json(await getCategories()); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Products Routes ============
+app.get('/api/products', async (req, res) => {
+  try {
+    const { category } = req.query;
+    res.json(await getProducts(category));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.get('/api/products/:category', async (req, res) => {
+  try { res.json(await getProducts(req.params.category)); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/products', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const product = {
+      id: uuidv4().slice(0, 8),
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      image: req.file ? `uploads/images/${req.file.filename}` : req.body.image || 'images/product-cream.svg',
+      whatsapp: `أريد ${req.body.name}`
+    };
+    res.json(await createProduct(product));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.put('/api/products/:id', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const data = {};
+    if (req.body.name) { data.name = req.body.name; data.whatsapp = `أريد ${req.body.name}`; }
+    if (req.body.description) data.description = req.body.description;
+    if (req.body.price) data.price = req.body.price;
+    if (req.body.category) data.category = req.body.category;
+    if (req.file) data.image = `uploads/images/${req.file.filename}`;
+    const result = await updateProduct(req.params.id, data);
+    if (!result) return res.status(404).json({ error: 'المنتج غير موجود' });
+    res.json(result);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.delete('/api/products/:id', authMiddleware, async (req, res) => {
+  try {
+    const ok = await deleteProduct(req.params.id);
+    if (!ok) return res.status(404).json({ error: 'المنتج غير موجود' });
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Offers Routes ============
+app.get('/api/offers', async (req, res) => {
+  try { res.json(await getOffers()); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/offers', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const offer = {
+      id: uuidv4().slice(0, 8),
+      title: req.body.title,
+      description: req.body.description,
+      image: req.file ? `uploads/images/${req.file.filename}` : '',
+      active: req.body.active === 'true' || req.body.active === true,
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+    res.json(await createOffer(offer));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.put('/api/offers/:id', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const data = {};
+    if (req.body.title) data.title = req.body.title;
+    if (req.body.description) data.description = req.body.description;
+    if (req.body.active !== undefined) data.active = req.body.active === 'true' || req.body.active === true;
+    if (req.file) data.image = `uploads/images/${req.file.filename}`;
+    const result = await updateOffer(req.params.id, data);
+    if (!result) return res.status(404).json({ error: 'العرض غير موجود' });
+    res.json(result);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.delete('/api/offers/:id', authMiddleware, async (req, res) => {
+  try {
+    const ok = await deleteOffer(req.params.id);
+    if (!ok) return res.status(404).json({ error: 'العرض غير موجود' });
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Media Routes ============
+app.get('/api/media', async (req, res) => {
+  try { res.json(await getMedia()); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/media', authMiddleware, upload.single('file'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'الملف مطلوب' });
+  try {
+    const isVideo = req.file.mimetype.startsWith('video/');
+    const item = {
+      id: uuidv4().slice(0, 8),
+      type: isVideo ? 'video' : 'image',
+      url: isVideo ? `uploads/videos/${req.file.filename}` : `uploads/images/${req.file.filename}`,
+      title: req.body.title || req.file.originalname,
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+    res.json(await createMedia(item));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.delete('/api/media/:id', authMiddleware, async (req, res) => {
+  try {
+    const item = await deleteMedia(req.params.id);
+    if (!item) return res.status(404).json({ error: 'الملف غير موجود' });
+    const filePath = path.join(__dirname, item.url);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Orders Routes ============
+app.get('/api/orders', authMiddleware, async (req, res) => {
+  try { res.json(await getOrders()); }
+  catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/orders', authMiddleware, async (req, res) => {
+  try {
+    const order = {
+      id: uuidv4().slice(0, 8),
+      customer: req.body.customer,
+      phone: req.body.phone,
+      products: req.body.products || [],
+      total: req.body.total,
+      status: req.body.status || 'pending',
+      note: req.body.note || '',
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+    res.json(await createOrder(order));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.put('/api/orders/:id', authMiddleware, async (req, res) => {
+  try {
+    const result = await updateOrder(req.params.id, req.body);
+    if (!result) return res.status(404).json({ error: 'الطلب غير موجود' });
+    res.json(result);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.delete('/api/orders/:id', authMiddleware, async (req, res) => {
+  try {
+    const ok = await deleteOrder(req.params.id);
+    if (!ok) return res.status(404).json({ error: 'الطلب غير موجود' });
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Dashboard Stats ============
+app.get('/api/stats', authMiddleware, async (req, res) => {
+  try {
+    let products, offers, media, orders, categories;
+    if (USE_PG) {
+      const [p, o, m, ord, cat] = await Promise.all([
+        pgQuery('SELECT COUNT(*) FROM products'),
+        pgQuery('SELECT COUNT(*) FROM offers WHERE active=true'),
+        pgQuery('SELECT COUNT(*) FROM media'),
+        pgQuery('SELECT COUNT(*) FROM orders'),
+        pgQuery('SELECT COUNT(*) FROM categories')
+      ]);
+      products = parseInt(p.rows[0].count);
+      offers = parseInt(o.rows[0].count);
+      media = parseInt(m.rows[0].count);
+      orders = parseInt(ord.rows[0].count);
+      categories = parseInt(cat.rows[0].count);
+    } else {
+      const db = readDB();
+      products = db.products.length;
+      offers = db.offers.filter(o => o.active).length;
+      media = db.media.length;
+      orders = (db.orders || []).length;
+      categories = (db.categories || []).length;
+    }
+    const imagesDir = path.join(__dirname, 'uploads', 'images');
+    const videosDir = path.join(__dirname, 'uploads', 'videos');
+    const imageCount = fs.existsSync(imagesDir) ? fs.readdirSync(imagesDir).length : 0;
+    const videoCount = fs.existsSync(videosDir) ? fs.readdirSync(videosDir).length : 0;
+    res.json({ products, offers, media, images: imageCount, videos: videoCount, categories, orders });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Start Server ============
+async function start() {
+  if (USE_PG) {
+    await initPG();
+    console.log('✓ PostgreSQL connected');
+  } else {
+    console.log('✓ Using file-based JSON (local dev)');
+  }
+  app.listen(PORT, () => {
+    console.log(`✓ Fadora - الخادم يعمل على http://localhost:${PORT}`);
+    console.log(`✓ لوحة الإدارة: http://localhost:${PORT}/admin/`);
+    console.log(`✓ الموقع: http://localhost:${PORT}/index.html`);
+  });
+}
+
+start();
+
+module.exports = app;

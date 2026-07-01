@@ -1,0 +1,427 @@
+{
+  "settings": {
+    "social": {
+      "instagram": "",
+      "twitter": "",
+      "snapchat": "",
+      "facebook": "https://www.facebook.com/share/1C5ZsgvixG/",
+      "whatsapp": "249924643848"
+    },
+    "payment": {
+      "method": "bank",
+      "bankName": "بنك الخرطوم",
+      "accountName": "Fadora",
+      "accountNumber": "2845474",
+      "cashOnDelivery": true
+    }
+  },
+  "admin": {
+    "username": "admin",
+    "password": "$2a$10$nHujiPoNq1TyzgFcqq2dGO5vn.A8p8M2UZBfvv7DyTbMiOk10CwT6"
+  },
+  "categories": [
+    {
+      "id": "face",
+      "name": "تركيبات الوجه",
+      "icon": "face",
+      "order": 1
+    },
+    {
+      "id": "body",
+      "name": "تركيبات الجسم",
+      "icon": "body",
+      "order": 2
+    },
+    {
+      "id": "moisturizing",
+      "name": "ترطيب الجسم",
+      "icon": "moisture",
+      "order": 3
+    },
+    {
+      "id": "hair",
+      "name": "منتجات الشعر",
+      "icon": "hair",
+      "order": 4
+    },
+    {
+      "id": "married",
+      "name": "منتجات المتزوجات",
+      "icon": "married",
+      "order": 5
+    },
+    {
+      "id": "weight",
+      "name": "منتجات التسمين",
+      "icon": "weight",
+      "order": 6
+    },
+    {
+      "id": "plasma",
+      "name": "البلازما",
+      "icon": "plasma",
+      "order": 7
+    },
+    {
+      "id": "pregnancy",
+      "name": "منتجات آمنة للحوامل",
+      "icon": "pregnancy",
+      "order": 8
+    }
+  ],
+  "products": [
+    {
+      "id": "f1",
+      "name": "تقشير الوجه",
+      "description": "مقشر لطيف للوجه سعة 30 جرام",
+      "price": "10,000",
+      "category": "face",
+      "image": "images/product-facewash.svg",
+      "whatsapp": "أريد تقشير الوجه 30 جرام"
+    },
+    {
+      "id": "f2",
+      "name": "ترطيب الوجه",
+      "description": "مرطب عميق للوجه سعة 30 جرام",
+      "price": "15,000",
+      "category": "face",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد ترطيب الوجه 30 جرام"
+    },
+    {
+      "id": "f3",
+      "name": "تفتيح نايرة",
+      "description": "كريم تفتيح نايرة للوجه سعة 30 جرام",
+      "price": "15,000",
+      "category": "face",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح نايرة 30 جرام"
+    },
+    {
+      "id": "f4",
+      "name": "سيروم الكلف",
+      "description": "سيروم معالج للكلف والتصبغات سعة 30 مل",
+      "price": "20,000",
+      "category": "face",
+      "image": "images/product-serum.svg",
+      "whatsapp": "أريد سيروم الكلف 30 مل"
+    },
+    {
+      "id": "f5",
+      "name": "تركيبة علاجية للكلف",
+      "description": "تركيبة متخصصة لعلاج الكلف سعة 30 جرام",
+      "price": "15,000",
+      "category": "face",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تركيبة علاجية للكلف 30 جرام"
+    },
+    {
+      "id": "b1",
+      "name": "صابونية تقشير",
+      "description": "صابونية مقشرة للجسم",
+      "price": "6,000",
+      "category": "body",
+      "image": "images/product-facewash.svg",
+      "whatsapp": "أريد صابونية تقشير"
+    },
+    {
+      "id": "b2",
+      "name": "تقشير مركز",
+      "description": "مقشر مركز للجسم سعة 100 جرام",
+      "price": "20,000",
+      "category": "body",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تقشير مركز 100 جرام"
+    },
+    {
+      "id": "b3",
+      "name": "تفتيح الجسم مركز 300 جرام",
+      "description": "كريم تفتيح مركز للجسم عبوة 300 جرام",
+      "price": "50,000",
+      "category": "body",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح جسم 300 جرام"
+    },
+    {
+      "id": "b4",
+      "name": "تفتيح الجسم مركز 200 جرام",
+      "description": "كريم تفتيح مركز للجسم عبوة 200 جرام",
+      "price": "40,000",
+      "category": "body",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح جسم 200 جرام"
+    },
+    {
+      "id": "b5",
+      "name": "تفتيح الجسم مركز 100 جرام",
+      "description": "كريم تفتيح مركز للجسم عبوة 100 جرام",
+      "price": "20,000",
+      "category": "body",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح جسم 100 جرام"
+    },
+    {
+      "id": "b6",
+      "name": "تفتيح الجسم جامبو",
+      "description": "كريم تفتيح مركز جامبو 500 جرام",
+      "price": "70,000",
+      "category": "body",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح جسم جامبو 500 جرام"
+    },
+    {
+      "id": "m1",
+      "name": "يوريا ونضارة فيتامين C",
+      "description": "مرطب باليوريا وفيتامين C سعة 200 جرام",
+      "price": "25,000",
+      "category": "moisturizing",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد يوريا ونضارة فيتامين C 200 جرام"
+    },
+    {
+      "id": "m2",
+      "name": "يوريا ونضارة وعلاج شقريب",
+      "description": "مرطب باليوريا لعلاج التشققات سعة 200 جرام",
+      "price": "30,000",
+      "category": "moisturizing",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد يوريا ونضارة وعلاج شقريب 200 جرام"
+    },
+    {
+      "id": "m3",
+      "name": "يوريا بزبدة الليمون",
+      "description": "مرطب باليوريا وزبدة الليمون سعة 200 جرام",
+      "price": "25,000",
+      "category": "moisturizing",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد يوريا بزبدة الليمون 200 جرام"
+    },
+    {
+      "id": "h1",
+      "name": "زيت الأعشاب",
+      "description": "زيت طبيعي للأعشاب للشعر سعة 120 مل",
+      "price": "20,000",
+      "category": "hair",
+      "image": "images/product-hairoil.svg",
+      "whatsapp": "أريد زيت الأعشاب 120 مل"
+    },
+    {
+      "id": "h2",
+      "name": "ترطيب الشعر",
+      "description": "كريم ترطيب عميق للشعر سعة 200 جرام",
+      "price": "30,000",
+      "category": "hair",
+      "image": "images/product-hairmask.svg",
+      "whatsapp": "أريد ترطيب الشعر 200 جرام"
+    },
+    {
+      "id": "h3",
+      "name": "بخاخ روز ماري",
+      "description": "بخاخ إكليل الجبل للشعر سعة 150 مل",
+      "price": "10,000",
+      "category": "hair",
+      "image": "images/product-conditioner.svg",
+      "whatsapp": "أريد بخاخ روز ماري 150 مل"
+    },
+    {
+      "id": "h4",
+      "name": "حنة أعشاب للتغزير",
+      "description": "حنة طبيعية بالأعشاب لتغزير الشعر سعة 200 جرام",
+      "price": "10,000",
+      "category": "hair",
+      "image": "images/product-hairmask.svg",
+      "whatsapp": "أريد حنة أعشاب للتغزير 200 جرام"
+    },
+    {
+      "id": "w1",
+      "name": "كريم العروسة",
+      "description": "كريم مخصص للعناية بالمناطق الحساسة (تضيق)",
+      "price": "15,000",
+      "category": "married",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد كريم العروسة"
+    },
+    {
+      "id": "w2",
+      "name": "كريم الدخان",
+      "description": "كريم لعلاج حساسية وتصبغات الدخان",
+      "price": "15,000",
+      "category": "married",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد كريم الدخان"
+    },
+    {
+      "id": "w3",
+      "name": "مخمرية",
+      "description": "منتج مخمرية طبيعي",
+      "price": "5,000",
+      "category": "married",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد مخمرية"
+    },
+    {
+      "id": "g1",
+      "name": "تسمين عام",
+      "description": "مكمل طبيعي آمن للتسمين العام بالأعشاب",
+      "price": "20,000",
+      "category": "weight",
+      "image": "images/product-serum.svg",
+      "whatsapp": "أريد تسمين عام"
+    },
+    {
+      "id": "g2",
+      "name": "تسمين موضعي",
+      "description": "كريم تسمين موضعي آمن بالأعشاب",
+      "price": "30,000",
+      "category": "weight",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تسمين موضعي"
+    },
+    {
+      "id": "g3",
+      "name": "بكج تسمين عام وموضعي",
+      "description": "باقة التسمين الكاملة (عام + موضعي) بسعر مخفض",
+      "price": "50,000",
+      "category": "weight",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد بكج تسمين عام وموضعي"
+    },
+    {
+      "id": "p1",
+      "name": "بلازما الشعر",
+      "description": "جلسة بلازما للشعر + بلسم مغذي",
+      "price": "20,000",
+      "category": "plasma",
+      "image": "images/product-serum.svg",
+      "whatsapp": "أريد بلازما الشعر"
+    },
+    {
+      "id": "p2",
+      "name": "بلازما الشقريب",
+      "description": "جلسة بلازما لعلاج التشققات + كريم كولاجين عميق",
+      "price": "20,000",
+      "category": "plasma",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد بلازما الشقريب"
+    },
+    {
+      "id": "p3",
+      "name": "بلازما التصبغات والكلف",
+      "description": "جلسة بلازما للتصبغات والكلف + ترطيب",
+      "price": "20,000",
+      "category": "plasma",
+      "image": "images/product-serum.svg",
+      "whatsapp": "أريد بلازما التصبغات والكلف"
+    },
+    {
+      "id": "p4",
+      "name": "فيشل يدوي",
+      "description": "جلسة فيشل يدوي للوجه قبل البلازما",
+      "price": "5,000",
+      "category": "plasma",
+      "image": "images/product-facewash.svg",
+      "whatsapp": "أريد فيشل يدوي"
+    },
+    {
+      "id": "pr1",
+      "name": "تفتيح وجه للحوامل",
+      "description": "كريم تفتيح وجه آمن للحوامل",
+      "price": "15,000",
+      "category": "pregnancy",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح وجه للحوامل"
+    },
+    {
+      "id": "pr2",
+      "name": "تفتيح جسم للحوامل",
+      "description": "كريم تفتيح جسم آمن للحوامل",
+      "price": "40,000",
+      "category": "pregnancy",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد تفتيح جسم للحوامل"
+    },
+    {
+      "id": "pr3",
+      "name": "نضارة جسم للحوامل",
+      "description": "كريم نضارة جسم آمن للحوامل",
+      "price": "35,000",
+      "category": "pregnancy",
+      "image": "images/product-cream.svg",
+      "whatsapp": "أريد نضارة جسم للحوامل"
+    }
+  ],
+  "offers": [
+    {
+      "id": "o1",
+      "title": "🎯 بكج الكلف المثالي",
+      "description": "سيروم الكلف + تركيبة علاجية للكلف بسعر 30,000 فقط (وفر 5,000)",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    },
+    {
+      "id": "o2",
+      "title": "💪 بكج التسمين الشامل",
+      "description": "تسمين عام + تسمين موضعي معاً بسعر 45,000 (وفر 5,000)",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    },
+    {
+      "id": "o3",
+      "title": "🌸 عرض العروسة",
+      "description": "كريم العروسة + مخمرية + تفتيح نايرة بسعر 30,000 فقط",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    },
+    {
+      "id": "o4",
+      "title": "✨ بلازما كاملة",
+      "description": "فيشل يدوي + بلازما الوجه + ترطيب بسعر 25,000 (التوصيل مجاني)",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    },
+    {
+      "id": "o5",
+      "title": "🌿 عناية كاملة للشعر",
+      "description": "زيت الأعشاب + ترطيب الشعر + بخاخ روز ماري بسعر 55,000 (وفر 5,000)",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    },
+    {
+      "id": "o6",
+      "title": "🤰 عناية آمنة للحوامل",
+      "description": "تفتيح وجه + تفتيح جسم + نضارة جسم بسعر 80,000 (وفر 10,000)",
+      "image": "",
+      "active": true,
+      "createdAt": "2026-06-30"
+    }
+  ],
+  "media": [
+    {
+      "id": "m1",
+      "type": "image",
+      "url": "images/icon-512.png",
+      "title": "شعار Fadora",
+      "createdAt": "2026-06-30"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord1",
+      "customer": "نورة أحمد",
+      "phone": "249912345678",
+      "products": [
+        "سيروم الكلف",
+        "تقشير الوجه"
+      ],
+      "total": "30,000",
+      "status": "completed",
+      "note": "توصيل للخرطوم",
+      "createdAt": "2026-06-28"
+    }
+  ]
+}

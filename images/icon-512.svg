@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#FEF9F5"/>
+  <circle cx="256" cy="240" r="130" fill="url(#grad)"/>
+  <defs>
+    <radialGradient id="grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E8D5C0"/>
+      <stop offset="100%" stop-color="#C4956A"/>
+    </radialGradient>
+  </defs>
+  <text x="256" y="275" text-anchor="middle" font-size="160" font-weight="700" font-family="Traditional Arabic, Arial" fill="#2C1810">د</text>
+  <text x="256" y="400" text-anchor="middle" font-size="60" font-weight="600" font-family="Arial" fill="#8B6F5C">★</text>
+</svg>
