@@ -1,4 +1,4 @@
-{
+﻿{
   "settings": {
     "social": {
       "instagram": "",
@@ -52,7 +52,7 @@
       "description": "كريم نضارة نهاري مضاد للتجاعيد 50 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38382%2f38382_1.png&MediaId=15204012&Version=5",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد نوفيج كريم نهاري 50 مل"
     },
     {
@@ -61,7 +61,7 @@
       "description": "كريم نضارة ليلي مغذي 50 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38385%2f38385_1.png&MediaId=15203538&Version=3",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد نوفيج كريم ليلي 50 مل"
     },
     {
@@ -70,7 +70,7 @@
       "description": "سيروم مضاد للتجاعيد 30 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F38390%2F38390_1.png&MediaId=15203532&Version=3",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد نوفيج سيروم 30 مل"
     },
     {
@@ -79,7 +79,7 @@
       "description": "كريم معالجة لمنطقة العين 15 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38391%2f38391_1.png&MediaId=15203554&Version=3",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد نوفيج كريم عين 15 مل"
     },
     {
@@ -88,7 +88,7 @@
       "description": "غسول وجه منعش 150 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F40794%2F40794_1.png&MediaId=15203526&Version=4",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد أوبتيمالز غسول وجه 150 مل"
     },
     {
@@ -97,7 +97,7 @@
       "description": "تونر منعش للوجه 150 مل",
       "price": "",
       "category": "face",
-      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F41672%2F41672_1.png&MediaId=15037597&Version=3",
+      "image": "images/product-oriflame.svg",
       "whatsapp": "أريد أوبتيمالز تونر 150 مل"
     },
     {
