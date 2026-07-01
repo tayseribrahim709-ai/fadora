@@ -1,4 +1,4 @@
-﻿{
+{
   "settings": {
     "social": {
       "instagram": "",
@@ -10,8 +10,8 @@
     "payment": {
       "method": "bank",
       "bankName": "بنك الخرطوم",
-      "accountName": "Fadora",
-      "accountNumber": "2845474",
+      "accountName": "",
+      "accountNumber": "",
       "cashOnDelivery": true
     }
   },
@@ -283,7 +283,7 @@
     {
       "id": "m1",
       "type": "image",
-      "url": "images/icon-512.svg",
+      "url": "images/fadora-logo.jpeg",
       "title": "شعار Fadora",
       "createdAt": "2026-07-01"
     }

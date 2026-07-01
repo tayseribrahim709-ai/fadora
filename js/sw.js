@@ -10,8 +10,7 @@ const ASSETS = [
   '/admin/index.html',
   '/admin/admin.css',
   '/admin/admin.js',
-  '/images/icon-192.svg',
-  '/images/icon-512.svg',
+  '/images/fadora-logo.jpeg',
   '/images/product-oriflame.svg',
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800'
 ];
@@ -54,8 +53,8 @@ self.addEventListener('push', (event) => {
   const data = event.data?.json() || { title: 'عرض جديد', body: 'تفقدي أحدث العروض من Fadora' };
   const options = {
     body: data.body,
-    icon: '/images/icon-192.svg',
-    badge: '/images/icon-192.svg',
+    icon: '/images/fadora-logo.jpeg',
+    badge: '/images/fadora-logo.jpeg',
     vibrate: [200, 100, 200],
     data: { url: data.url || '/' }
   };
