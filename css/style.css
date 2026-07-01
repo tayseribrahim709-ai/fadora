@@ -6,48 +6,48 @@
 }
 
 :root {
-  --primary: #E872A0;
-  --primary-dark: #D4508A;
-  --primary-light: #FDE2EB;
-  --secondary: #A07A8A;
-  --secondary-light: #E8D0DA;
-  --bg: #FFF8FA;
-  --bg-alt: #FDE8F0;
+  --primary: #FF6F61;
+  --primary-dark: #E85A4F;
+  --primary-light: #FFE4E0;
+  --secondary: #009688;
+  --secondary-light: #E0F2F1;
+  --bg: #FFF5F3;
+  --bg-alt: #FFEAE5;
   --surface: #FFFFFF;
-  --text: #2C1810;
-  --text-light: #6B4B5E;
-  --text-lighter: #9B7B8E;
-  --shadow: 0 4px 20px rgba(232, 114, 160, 0.08);
-  --shadow-lg: 0 8px 40px rgba(232, 114, 160, 0.12);
+  --text: #1A1A2E;
+  --text-light: #5C5C6E;
+  --text-lighter: #8E8E9E;
+  --shadow: 0 4px 20px rgba(255, 111, 97, 0.08);
+  --shadow-lg: 0 8px 40px rgba(255, 111, 97, 0.12);
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font: 'Tajawal', 'Segoe UI', 'Traditional Arabic', Tahoma, sans-serif;
-  --nav-bg: rgba(255, 248, 250, 0.95);
-  --hero-bg: linear-gradient(135deg, #FDE8F0 0%, #FCD0E0 30%, #F8B8D0 60%, #FDE2EB 100%);
-  --footer-bg: #2C1810;
+  --nav-bg: rgba(255, 245, 243, 0.95);
+  --hero-bg: linear-gradient(135deg, #FFEAE5 0%, #FFD4CC 30%, #FFBDB8 60%, #E0F2F1 100%);
+  --footer-bg: #1A1A2E;
   --input-bg: var(--bg);
-  --border-color: rgba(232, 114, 160, 0.15);
+  --border-color: rgba(255, 111, 97, 0.15);
 }
 
 [data-theme="dark"] {
-  --primary: #E872A0;
-  --primary-dark: #D4508A;
-  --primary-light: #4A2A38;
-  --secondary: #A07A8A;
-  --bg: #1A1014;
-  --bg-alt: #22181C;
-  --surface: #2C2028;
+  --primary: #FF6F61;
+  --primary-dark: #E85A4F;
+  --primary-light: #3D1E1C;
+  --secondary: #4DB6AC;
+  --bg: #121212;
+  --bg-alt: #1E1E1E;
+  --surface: #252525;
   --text: #F0E4E8;
   --text-light: #C8AEB8;
   --text-lighter: #8A7A80;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --nav-bg: rgba(26, 16, 20, 0.95);
-  --hero-bg: linear-gradient(135deg, #1A1014 0%, #22181C 30%, #2C2028 60%, #1A1014 100%);
-  --footer-bg: #0A080A;
-  --input-bg: #2C2028;
-  --border-color: rgba(232, 114, 160, 0.12);
+  --nav-bg: rgba(18, 18, 18, 0.95);
+  --hero-bg: linear-gradient(135deg, #121212 0%, #1E1E1E 30%, #252525 60%, #121212 100%);
+  --footer-bg: #0A0A0A;
+  --input-bg: #252525;
+  --border-color: rgba(255, 111, 97, 0.12);
 }
 
 html {
@@ -118,12 +118,12 @@ section {
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, var(--primary-dark), #00796B);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -131,7 +131,7 @@ section {
 .btn-sm {
   padding: 10px 24px;
   font-size: 0.9rem;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
   border-radius: 50px;
 }
@@ -168,14 +168,29 @@ section {
 }
 
 .logo-icon {
-  font-size: 2rem;
-  color: var(--primary);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.logo-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
 }
 
 .logo h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1.2;
 }
 

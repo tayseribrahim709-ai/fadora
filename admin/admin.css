@@ -3,18 +3,19 @@
 }
 
 :root {
-  --primary: #E872A0;
-  --primary-dark: #D4508A;
-  --primary-light: #FDE2EB;
-  --bg: #FFF8FA;
+  --primary: #FF6F61;
+  --primary-dark: #E85A4F;
+  --primary-light: #FFE4E0;
+  --secondary: #009688;
+  --bg: #FFF5F3;
   --surface: #FFFFFF;
-  --text: #2C1810;
-  --text-light: #6B4B5E;
-  --text-lighter: #9B7B8E;
-  --danger: #D45050;
-  --success: #5A9A6A;
-  --shadow: 0 2px 12px rgba(232,114,160,0.08);
-  --shadow-lg: 0 8px 32px rgba(232,114,160,0.12);
+  --text: #1A1A2E;
+  --text-light: #5C5C6E;
+  --text-lighter: #8E8E9E;
+  --danger: #E85A4F;
+  --success: #009688;
+  --shadow: 0 2px 12px rgba(255,111,97,0.08);
+  --shadow-lg: 0 8px 32px rgba(255,111,97,0.12);
   --radius: 12px;
   --radius-sm: 8px;
   --transition: 0.25s ease;
@@ -34,7 +35,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #FAF0E8, #F5E6D3);
+  background: linear-gradient(135deg, #FFEAE5, #E0F2F1);
   padding: 20px;
 }
 
@@ -49,9 +50,14 @@ body {
 }
 
 .login-logo {
-  font-size: 3rem;
-  color: var(--primary);
-  margin-bottom: 12px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 18px;
+  margin: 0 auto 12px;
 }
 
 .login-card h2 {
@@ -93,7 +99,7 @@ body {
 .btn-admin {
   width: 100%;
   padding: 14px 24px;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
   border: none;
   border-radius: 50px;
@@ -135,8 +141,13 @@ body {
 }
 
 .admin-logo span {
-  font-size: 1.6rem;
-  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 10px;
 }
 
 .admin-logo h2 {
@@ -168,7 +179,7 @@ body {
 }
 
 .nav-btn.active {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
 }
 
