@@ -366,6 +366,7 @@ async function loadSocialLinks() {
     if (social.instagram) document.getElementById('socialInstagram')?.setAttribute('href', social.instagram);
     if (social.twitter) document.getElementById('socialTwitter')?.setAttribute('href', social.twitter);
     if (social.snapchat) document.getElementById('socialSnapchat')?.setAttribute('href', social.snapchat);
+    if (social.tiktok) document.getElementById('socialTiktok')?.setAttribute('href', social.tiktok);
     if (social.whatsapp) {
       const wa = social.whatsapp.replace(/[^0-9]/g, '');
       document.getElementById('socialWhatsapp')?.setAttribute('href', `https://wa.me/${wa}`);
@@ -383,8 +384,8 @@ async function loadPaymentDetails() {
     const s = await res.json();
     const pay = s.payment || {};
     const el = document.getElementById('paymentBankDetails');
-    if (el && pay.bankName && pay.accountName && pay.accountNumber) {
-      el.textContent = `${pay.bankName} - ${pay.accountName} - ${pay.accountNumber}`;
+    if (el && pay.bankName && pay.accountNumber) {
+      el.textContent = `${pay.bankName} - ${pay.accountName || ''} - ${pay.accountNumber}`;
     }
   } catch {}
 }

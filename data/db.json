@@ -1,17 +1,18 @@
 {
   "settings": {
     "social": {
-      "instagram": "",
+      "instagram": "https://www.instagram.com/fadora_sd?igsh=MW9hYTNkN3FydTl1Yg==",
       "twitter": "",
       "snapchat": "",
       "facebook": "https://www.facebook.com/share/1C5ZsgvixG/",
+      "tiktok": "https://www.tiktok.com/@user6797885766091",
       "whatsapp": "249924643848"
     },
     "payment": {
       "method": "bank",
-      "bankName": "",
-      "accountName": "",
-      "accountNumber": "",
+      "bankName": "بنك الخرطوم",
+      "accountName": "Fadora",
+      "accountNumber": "8399318",
       "cashOnDelivery": true
     }
   },
