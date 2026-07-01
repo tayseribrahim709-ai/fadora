@@ -67,23 +67,23 @@ let categories = [];
 let allProducts = [];
 
 const FALLBACK_CATEGORIES = [
-  { id: 'face', name: 'تركيبات الوجه', order: 1 },
-  { id: 'body', name: 'تركيبات الجسم', order: 2 },
-  { id: 'hair', name: 'منتجات الشعر', order: 4 },
-  { id: 'weight', name: 'التسمين', order: 6 }
+  { id: 'face', name: 'العناية بالبشرة', order: 1 },
+  { id: 'hair', name: 'العناية بالشعر', order: 2 },
+  { id: 'perfume', name: 'العطور', order: 3 },
+  { id: 'body', name: 'العناية بالجسم', order: 4 }
 ];
 
 const FALLBACK_PRODUCTS = [
-  { id: 'f1', name: 'تقشير الوجه', description: 'مقشر لطيف للوجه سعة 30 جرام', price: '10,000', category: 'face', image: 'images/product-facewash.svg', whatsapp: 'أريد تقشير الوجه' },
-  { id: 'f2', name: 'ترطيب الوجه', description: 'مرطب عميق للوجه سعة 30 جرام', price: '15,000', category: 'face', image: 'images/product-cream.svg', whatsapp: 'أريد ترطيب الوجه' },
-  { id: 'f4', name: 'سيروم الكلف', description: 'سيروم معالج للكلف والتصبغات 30 مل', price: '20,000', category: 'face', image: 'images/product-serum.svg', whatsapp: 'أريد سيروم الكلف' },
-  { id: 'b1', name: 'صابونية تقشير', description: 'صابونية مقشرة للجسم', price: '6,000', category: 'body', image: 'images/product-facewash.svg', whatsapp: 'أريد صابونية تقشير' },
-  { id: 'b5', name: 'تفتيح الجسم 100 جرام', description: 'كريم تفتيح مركز للجسم', price: '20,000', category: 'body', image: 'images/product-cream.svg', whatsapp: 'أريد تفتيح جسم' },
-  { id: 'h1', name: 'زيت الأعشاب', description: 'زيت طبيعي للشعر 120 مل', price: '20,000', category: 'hair', image: 'images/product-hairoil.svg', whatsapp: 'أريد زيت الأعشاب' },
-  { id: 'h3', name: 'بخاخ روز ماري', description: 'بخاخ إكليل الجبل للشعر 150 مل', price: '10,000', category: 'hair', image: 'images/product-conditioner.svg', whatsapp: 'أريد بخاخ روز ماري' },
-  { id: 'h4', name: 'حنة أعشاب للتغزير', description: 'حنة طبيعية بالأعشاب 200 جرام', price: '10,000', category: 'hair', image: 'images/product-hairmask.svg', whatsapp: 'أريد حنة أعشاب' },
-  { id: 'g1', name: 'تسمين عام', description: 'مكمل طبيعي آمن للتسمين العام', price: '20,000', category: 'weight', image: 'images/product-serum.svg', whatsapp: 'أريد تسمين عام' },
-  { id: 'g2', name: 'تسمين موضعي', description: 'كريم تسمين موضعي آمن بالأعشاب', price: '30,000', category: 'weight', image: 'images/product-cream.svg', whatsapp: 'أريد تسمين موضعي' }
+  { id: 'f1', name: 'نوفيج كريم نهاري', description: 'كريم نضارة نهاري مضاد للتجاعيد 50 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج كريم نهاري' },
+  { id: 'f2', name: 'نوفيج كريم ليلي', description: 'كريم نضارة ليلي مغذي 50 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج كريم ليلي' },
+  { id: 'f3', name: 'نوفيج سيروم', description: 'سيروم مضاد للتجاعيد 30 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج سيروم' },
+  { id: 'h1', name: 'شامبو ترو كلر', description: 'شامبو للشعر المصبوغ 250 مل', price: '', category: 'hair', image: 'images/product-oriflame.svg', whatsapp: 'أريد شامبو ترو كلر' },
+  { id: 'h5', name: 'زيت الأرغان للشعر', description: 'زيت أرغان مغذي للشعر 50 مل', price: '', category: 'hair', image: 'images/product-oriflame.svg', whatsapp: 'أريد زيت الأرغان للشعر' },
+  { id: 'p1', name: 'عطر إكلات', description: 'عطر نسائي فرنسي 50 مل - Eclat', price: '', category: 'perfume', image: 'images/product-oriflame.svg', whatsapp: 'أريد عطر إكلات' },
+  { id: 'p3', name: 'عطر لاكي ليدي', description: 'عطر نسائي جذاب 50 مل - Lucky Lady', price: '', category: 'perfume', image: 'images/product-oriflame.svg', whatsapp: 'أريد عطر لاكي ليدي' },
+  { id: 'b1', name: 'لوشن الجسم', description: 'لوشن مرطب للجسم بالألوفيرا 200 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد لوشن الجسم' },
+  { id: 'b3', name: 'كريم اليدين', description: 'كريم مغذي لليدين 75 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد كريم اليدين' },
+  { id: 'b4', name: 'جل استحمام', description: 'جل استحمام مغذي 250 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد جل استحمام' }
 ];
 
 async function loadCategoriesAndProducts() {
@@ -156,7 +156,7 @@ function renderProductCards(products) {
           <h3>${p.name}</h3>
           <p>${p.description}</p>
           <div class="product-bottom">
-            <span class="product-price">${p.price}</span>
+            ${p.price ? `<span class="product-price">${p.price}</span>` : ''}
             <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-sm">اطلب الآن</a>
           </div>
         </div>

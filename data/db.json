@@ -50,61 +50,61 @@
       "id": "f1",
       "name": "نوفيج كريم نهاري",
       "description": "كريم نضارة نهاري مضاد للتجاعيد 50 مل",
-      "price": "35,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38382%2f38382_1.png&MediaId=15204012&Version=5",
       "whatsapp": "أريد نوفيج كريم نهاري 50 مل"
     },
     {
       "id": "f2",
       "name": "نوفيج كريم ليلي",
       "description": "كريم نضارة ليلي مغذي 50 مل",
-      "price": "38,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38385%2f38385_1.png&MediaId=15203538&Version=3",
       "whatsapp": "أريد نوفيج كريم ليلي 50 مل"
     },
     {
       "id": "f3",
       "name": "نوفيج سيروم",
       "description": "سيروم مضاد للتجاعيد 30 مل",
-      "price": "45,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F38390%2F38390_1.png&MediaId=15203532&Version=3",
       "whatsapp": "أريد نوفيج سيروم 30 مل"
     },
     {
       "id": "f4",
       "name": "نوفيج كريم عين",
       "description": "كريم معالجة لمنطقة العين 15 مل",
-      "price": "28,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38391%2f38391_1.png&MediaId=15203554&Version=3",
       "whatsapp": "أريد نوفيج كريم عين 15 مل"
     },
     {
       "id": "f5",
       "name": "أوبتيمالز غسول وجه",
       "description": "غسول وجه منعش 150 مل",
-      "price": "15,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F40794%2F40794_1.png&MediaId=15203526&Version=4",
       "whatsapp": "أريد أوبتيمالز غسول وجه 150 مل"
     },
     {
       "id": "f6",
       "name": "أوبتيمالز تونر",
       "description": "تونر منعش للوجه 150 مل",
-      "price": "14,000",
+      "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F41672%2F41672_1.png&MediaId=15037597&Version=3",
       "whatsapp": "أريد أوبتيمالز تونر 150 مل"
     },
     {
       "id": "f7",
       "name": "أوبتيمالز مرطب",
       "description": "مرطب ترطيب عميق 50 مل",
-      "price": "18,000",
+      "price": "",
       "category": "face",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد أوبتيمالز مرطب 50 مل"
@@ -113,7 +113,7 @@
       "id": "f8",
       "name": "ماسك الوجه جل الألوفيرا",
       "description": "ماسك مرطب بالألوفيرا 75 مل",
-      "price": "12,000",
+      "price": "",
       "category": "face",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد ماسك الألوفيرا 75 مل"
@@ -122,7 +122,7 @@
       "id": "h1",
       "name": "شامبو ترو كلر",
       "description": "شامبو للشعر المصبوغ 250 مل",
-      "price": "18,000",
+      "price": "",
       "category": "hair",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد شامبو ترو كلر 250 مل"
@@ -131,7 +131,7 @@
       "id": "h2",
       "name": "بلسم ترو كلر",
       "description": "بلسم للشعر المصبوغ 200 مل",
-      "price": "18,000",
+      "price": "",
       "category": "hair",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد بلسم ترو كلر 200 مل"
@@ -140,7 +140,7 @@
       "id": "h3",
       "name": "شامبو حليب وعسل",
       "description": "شامبو مغذي بالحليب والعسل 250 مل",
-      "price": "15,000",
+      "price": "",
       "category": "hair",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد شامبو حليب وعسل 250 مل"
@@ -149,7 +149,7 @@
       "id": "h4",
       "name": "ماسك الشعر حليب وعسل",
       "description": "ماسك مغذي للشعر 200 مل",
-      "price": "22,000",
+      "price": "",
       "category": "hair",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد ماسك حليب وعسل 200 مل"
@@ -158,7 +158,7 @@
       "id": "h5",
       "name": "زيت الأرغان للشعر",
       "description": "زيت أرغان مغذي للشعر 50 مل",
-      "price": "25,000",
+      "price": "",
       "category": "hair",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد زيت الأرغان للشعر 50 مل"
@@ -167,7 +167,7 @@
       "id": "p1",
       "name": "عطر إكلات",
       "description": "عطر نسائي فرنسي 50 مل - Eclat",
-      "price": "55,000",
+      "price": "",
       "category": "perfume",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد عطر إكلات 50 مل"
@@ -176,7 +176,7 @@
       "id": "p2",
       "name": "عطر فولاري",
       "description": "عطر نسائي زهري 50 مل - Volare",
-      "price": "45,000",
+      "price": "",
       "category": "perfume",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد عطر فولاري 50 مل"
@@ -185,7 +185,7 @@
       "id": "p3",
       "name": "عطر لاكي ليدي",
       "description": "عطر نسائي جذاب 50 مل - Lucky Lady",
-      "price": "50,000",
+      "price": "",
       "category": "perfume",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد عطر لاكي ليدي 50 مل"
@@ -194,7 +194,7 @@
       "id": "p4",
       "name": "عطر بارادايس",
       "description": "عطر نسائي منعش 50 مل - Paradise",
-      "price": "48,000",
+      "price": "",
       "category": "perfume",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد عطر بارادايس 50 مل"
@@ -203,7 +203,7 @@
       "id": "p5",
       "name": "عطر جيورداني جولد",
       "description": "عطر نسائي فاخر 50 مل - Giordani Gold",
-      "price": "65,000",
+      "price": "",
       "category": "perfume",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد عطر جيورداني 50 مل"
@@ -212,7 +212,7 @@
       "id": "b1",
       "name": "لوشن الجسم لوف نيتشر",
       "description": "لوشن مرطب للجسم بالألوفيرا 200 مل",
-      "price": "15,000",
+      "price": "",
       "category": "body",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد لوشن الجسم 200 مل"
@@ -221,7 +221,7 @@
       "id": "b2",
       "name": "زبدة الجسم حليب وعسل",
       "description": "زبدة جسم مغذية 200 مل",
-      "price": "20,000",
+      "price": "",
       "category": "body",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد زبدة الجسم 200 مل"
@@ -230,7 +230,7 @@
       "id": "b3",
       "name": "كريم اليدين",
       "description": "كريم مغذي لليدين 75 مل",
-      "price": "8,000",
+      "price": "",
       "category": "body",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد كريم اليدين 75 مل"
@@ -239,7 +239,7 @@
       "id": "b4",
       "name": "جل استحمام حليب وعسل",
       "description": "جل استحمام مغذي 250 مل",
-      "price": "14,000",
+      "price": "",
       "category": "body",
       "image": "images/product-oriflame.svg",
       "whatsapp": "أريد جل استحمام حليب وعسل 250 مل"
@@ -297,7 +297,7 @@
         "نوفيج كريم نهاري",
         "عطر إكلات"
       ],
-      "total": "90,000",
+      "total": "0",
       "status": "pending",
       "note": "توصيل للخرطوم",
       "createdAt": "2026-07-01"
