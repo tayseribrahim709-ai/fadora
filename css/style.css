@@ -509,13 +509,14 @@ section {
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 20px;
 }
 
 .product-svg {
-  width: 100px;
-  height: 130px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+  border-radius: var(--radius-sm);
 }
 
 .product-info {

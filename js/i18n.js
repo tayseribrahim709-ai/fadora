@@ -16,7 +16,7 @@ const i18n = {
     aboutDesc: 'شريكة أوريفليم للعناية بالبشرة والشعر والعطور - صنع بكل حب',
     doctorName: 'Fadora',
     doctorSub: 'شريكة أوريفليم',
-    doctorBio: 'صنع بكل حب - المحافظة على جمالك وإشراقك بأمان عالي. أنوثة طاغية ودلال ونعومة. جميع ما يخص العناية بالبشرة والشعر والعطور.'
+    doctorBio: 'صنع بكل حب - المحافظة على جمالك وإشراقك بأمان عالي. أنوثة طاغية ودلال ونعومة. جميع ما يخص العناية بالبشرة والشعر والعطور.',
     about1Title: 'منتجات أوريفليم الأصلية',
     about1Desc: 'نوفر لكم منتجات أوريفليم السويدية الأصلية بأفضل الأسعار',
     about2Title: 'جودة عالمية',
@@ -71,7 +71,12 @@ const i18n = {
     cashOnDelivery: 'الدفع عند الاستلام',
     language: 'English',
     themeLight: 'الوضع النهاري',
-    themeDark: 'الوضع الليلي'
+    themeDark: 'الوضع الليلي',
+    category_face: 'العناية بالبشرة',
+    category_hair: 'العناية بالشعر',
+    category_perfume: 'العطور',
+    category_body: 'العناية بالجسم',
+    category_men: 'قسم الرجال'
   },
   en: {
     siteName: 'Fadora',
@@ -90,7 +95,7 @@ const i18n = {
     aboutDesc: 'Oriflame partner for skin care, hair care & perfumes - Made with Love',
     doctorName: 'Fadora',
     doctorSub: 'Oriflame Partner',
-    doctorBio: 'Made with love - preserving your beauty and radiance with high safety. Femininity, pampering, and softness. Everything for skin care, hair care, and perfumes.'
+    doctorBio: 'Made with love - preserving your beauty and radiance with high safety. Femininity, pampering, and softness. Everything for skin care, hair care, and perfumes.',
     about1Title: 'Original Oriflame',
     about1Desc: 'We provide original Swedish Oriflame products at the best prices',
     about2Title: 'Global Quality',
@@ -145,7 +150,12 @@ const i18n = {
     cashOnDelivery: 'Cash on Delivery',
     language: 'العربية',
     themeLight: 'Light Mode',
-    themeDark: 'Dark Mode'
+    themeDark: 'Dark Mode',
+    category_face: 'Skincare',
+    category_hair: 'Hair Care',
+    category_perfume: 'Perfumes',
+    category_body: 'Body Care',
+    category_men: "Men's Section"
   }
 };
 

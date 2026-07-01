@@ -53,14 +53,15 @@ window.addEventListener('scroll', () => {
 
 /* ================= Product Tabs ================= */
 const PRODUCT_ICONS = {
-  face: 'images/product-facewash.svg',
-  body: 'images/product-cream.svg',
-  moisturizing: 'images/product-cream.svg',
-  hair: 'images/product-hairmask.svg',
-  married: 'images/product-cream.svg',
-  weight: 'images/product-serum.svg',
-  plasma: 'images/product-serum.svg',
-  pregnancy: 'images/product-cream.svg'
+  face: 'images/fadora-logo.jpeg',
+  body: 'images/fadora-logo.jpeg',
+  moisturizing: 'images/fadora-logo.jpeg',
+  hair: 'images/fadora-logo.jpeg',
+  married: 'images/fadora-logo.jpeg',
+  weight: 'images/fadora-logo.jpeg',
+  plasma: 'images/fadora-logo.jpeg',
+  pregnancy: 'images/fadora-logo.jpeg',
+  men: 'images/fadora-logo.jpeg'
 };
 
 let categories = [];
@@ -70,20 +71,27 @@ const FALLBACK_CATEGORIES = [
   { id: 'face', name: 'العناية بالبشرة', order: 1 },
   { id: 'hair', name: 'العناية بالشعر', order: 2 },
   { id: 'perfume', name: 'العطور', order: 3 },
-  { id: 'body', name: 'العناية بالجسم', order: 4 }
+  { id: 'body', name: 'العناية بالجسم', order: 4 },
+  { id: 'men', name: 'قسم الرجال', order: 5 }
 ];
 
 const FALLBACK_PRODUCTS = [
-  { id: 'f1', name: 'نوفيج كريم نهاري', description: 'كريم نضارة نهاري مضاد للتجاعيد 50 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج كريم نهاري' },
-  { id: 'f2', name: 'نوفيج كريم ليلي', description: 'كريم نضارة ليلي مغذي 50 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج كريم ليلي' },
-  { id: 'f3', name: 'نوفيج سيروم', description: 'سيروم مضاد للتجاعيد 30 مل', price: '', category: 'face', image: 'images/product-oriflame.svg', whatsapp: 'أريد نوفيج سيروم' },
-  { id: 'h1', name: 'شامبو ترو كلر', description: 'شامبو للشعر المصبوغ 250 مل', price: '', category: 'hair', image: 'images/product-oriflame.svg', whatsapp: 'أريد شامبو ترو كلر' },
-  { id: 'h5', name: 'زيت الأرغان للشعر', description: 'زيت أرغان مغذي للشعر 50 مل', price: '', category: 'hair', image: 'images/product-oriflame.svg', whatsapp: 'أريد زيت الأرغان للشعر' },
-  { id: 'p1', name: 'عطر إكلات', description: 'عطر نسائي فرنسي 50 مل - Eclat', price: '', category: 'perfume', image: 'images/product-oriflame.svg', whatsapp: 'أريد عطر إكلات' },
-  { id: 'p3', name: 'عطر لاكي ليدي', description: 'عطر نسائي جذاب 50 مل - Lucky Lady', price: '', category: 'perfume', image: 'images/product-oriflame.svg', whatsapp: 'أريد عطر لاكي ليدي' },
-  { id: 'b1', name: 'لوشن الجسم', description: 'لوشن مرطب للجسم بالألوفيرا 200 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد لوشن الجسم' },
-  { id: 'b3', name: 'كريم اليدين', description: 'كريم مغذي لليدين 75 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد كريم اليدين' },
-  { id: 'b4', name: 'جل استحمام', description: 'جل استحمام مغذي 250 مل', price: '', category: 'body', image: 'images/product-oriflame.svg', whatsapp: 'أريد جل استحمام' }
+  { id: 'f1', name: 'نوفيج كريم نهاري', description: 'كريم نضارة نهاري مضاد للتجاعيد 50 مل', price: '', category: 'face', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد نوفيج كريم نهاري 50 مل' },
+  { id: 'f2', name: 'نوفيج كريم ليلي', description: 'كريم نضارة ليلي مغذي 50 مل', price: '', category: 'face', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد نوفيج كريم ليلي 50 مل' },
+  { id: 'f3', name: 'نوفيج سيروم', description: 'سيروم مضاد للتجاعيد 30 مل', price: '', category: 'face', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد نوفيج سيروم 30 مل' },
+  { id: 'h1', name: 'شامبو ترو كلر', description: 'شامبو للشعر المصبوغ 250 مل', price: '', category: 'hair', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد شامبو ترو كلر 250 مل' },
+  { id: 'h5', name: 'زيت الأرغان للشعر', description: 'زيت أرغان مغذي للشعر 50 مل', price: '', category: 'hair', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد زيت الأرغان للشعر' },
+  { id: 'p1', name: 'عطر إكلات', description: 'عطر نسائي فرنسي 50 مل - Eclat', price: '', category: 'perfume', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد عطر إكلات 50 مل' },
+  { id: 'p3', name: 'عطر لاكي ليدي', description: 'عطر نسائي جذاب 50 مل - Lucky Lady', price: '', category: 'perfume', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد عطر لاكي ليدي 50 مل' },
+  { id: 'b1', name: 'لوشن الجسم', description: 'لوشن مرطب للجسم بالألوفيرا 200 مل', price: '', category: 'body', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد لوشن الجسم 200 مل' },
+  { id: 'b3', name: 'كريم اليدين', description: 'كريم مغذي لليدين 75 مل', price: '', category: 'body', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد كريم اليدين 75 مل' },
+  { id: 'b4', name: 'جل استحمام', description: 'جل استحمام مغذي 250 مل', price: '', category: 'body', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد جل استحمام حليب وعسل 250 مل' },
+  { id: 'm1', name: 'شامبو رجالي أوريفليم', description: 'شامبو منعش للرجال 250 مل', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد شامبو رجالي أوريفليم' },
+  { id: 'm2', name: 'جل حلاقة أوريفليم', description: 'جل حلاقة مهدئ للبشرة 150 مل', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد جل حلاقة أوريفليم' },
+  { id: 'm3', name: 'عطر رجالي جيورداني جولد', description: 'عطر رجالي فاخر 75 مل - Giordani Gold', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد عطر جيورداني جولد رجالي' },
+  { id: 'm4', name: 'كريم ما بعد الحلاقة', description: 'كريم مهدئ ومنعش بعد الحلاقة 75 مل', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد كريم ما بعد الحلاقة' },
+  { id: 'm5', name: 'سبراي عطر رجالي', description: 'سبراي عطر رجالي منعش 100 مل', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد سبراي عطر رجالي' },
+  { id: 'm6', name: 'مزيل عرق رجالي أوريفليم', description: 'مزيل عرق رول أون للرجال 50 مل', price: '', category: 'men', image: 'images/fadora-logo.jpeg', whatsapp: 'أريد مزيل عرق رجالي أوريفليم' }
 ];
 
 async function loadCategoriesAndProducts() {
@@ -149,7 +157,7 @@ function renderProductCards(products) {
     const img = p.image || PRODUCT_ICONS[p.category] || 'images/product-cream.svg';
     return `
       <div class="product-card">
-        <div class="product-img" style="background: linear-gradient(135deg, #f5e6d3, #e8d5c4);">
+        <div class="product-img" style="background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));">
           <img src="${img}" alt="${p.name}" class="product-svg">
         </div>
         <div class="product-info">

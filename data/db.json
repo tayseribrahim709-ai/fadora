@@ -9,7 +9,7 @@
     },
     "payment": {
       "method": "bank",
-      "bankName": "بنك الخرطوم",
+      "bankName": "",
       "accountName": "",
       "accountNumber": "",
       "cashOnDelivery": true
@@ -43,6 +43,12 @@
       "name": "العناية بالجسم",
       "icon": "body",
       "order": 4
+    },
+    {
+      "id": "men",
+      "name": "قسم الرجال",
+      "icon": "men",
+      "order": 5
     }
   ],
   "products": [
@@ -52,7 +58,7 @@
       "description": "كريم نضارة نهاري مضاد للتجاعيد 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد نوفيج كريم نهاري 50 مل"
     },
     {
@@ -61,7 +67,7 @@
       "description": "كريم نضارة ليلي مغذي 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد نوفيج كريم ليلي 50 مل"
     },
     {
@@ -70,7 +76,7 @@
       "description": "سيروم مضاد للتجاعيد 30 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد نوفيج سيروم 30 مل"
     },
     {
@@ -79,7 +85,7 @@
       "description": "كريم معالجة لمنطقة العين 15 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد نوفيج كريم عين 15 مل"
     },
     {
@@ -88,7 +94,7 @@
       "description": "غسول وجه منعش 150 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد أوبتيمالز غسول وجه 150 مل"
     },
     {
@@ -97,7 +103,7 @@
       "description": "تونر منعش للوجه 150 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد أوبتيمالز تونر 150 مل"
     },
     {
@@ -106,7 +112,7 @@
       "description": "مرطب ترطيب عميق 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد أوبتيمالز مرطب 50 مل"
     },
     {
@@ -115,7 +121,7 @@
       "description": "ماسك مرطب بالألوفيرا 75 مل",
       "price": "",
       "category": "face",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد ماسك الألوفيرا 75 مل"
     },
     {
@@ -124,7 +130,7 @@
       "description": "شامبو للشعر المصبوغ 250 مل",
       "price": "",
       "category": "hair",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد شامبو ترو كلر 250 مل"
     },
     {
@@ -133,7 +139,7 @@
       "description": "بلسم للشعر المصبوغ 200 مل",
       "price": "",
       "category": "hair",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد بلسم ترو كلر 200 مل"
     },
     {
@@ -142,7 +148,7 @@
       "description": "شامبو مغذي بالحليب والعسل 250 مل",
       "price": "",
       "category": "hair",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد شامبو حليب وعسل 250 مل"
     },
     {
@@ -151,7 +157,7 @@
       "description": "ماسك مغذي للشعر 200 مل",
       "price": "",
       "category": "hair",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد ماسك حليب وعسل 200 مل"
     },
     {
@@ -160,7 +166,7 @@
       "description": "زيت أرغان مغذي للشعر 50 مل",
       "price": "",
       "category": "hair",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد زيت الأرغان للشعر 50 مل"
     },
     {
@@ -169,7 +175,7 @@
       "description": "عطر نسائي فرنسي 50 مل - Eclat",
       "price": "",
       "category": "perfume",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد عطر إكلات 50 مل"
     },
     {
@@ -178,7 +184,7 @@
       "description": "عطر نسائي زهري 50 مل - Volare",
       "price": "",
       "category": "perfume",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد عطر فولاري 50 مل"
     },
     {
@@ -187,7 +193,7 @@
       "description": "عطر نسائي جذاب 50 مل - Lucky Lady",
       "price": "",
       "category": "perfume",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد عطر لاكي ليدي 50 مل"
     },
     {
@@ -196,7 +202,7 @@
       "description": "عطر نسائي منعش 50 مل - Paradise",
       "price": "",
       "category": "perfume",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد عطر بارادايس 50 مل"
     },
     {
@@ -205,7 +211,7 @@
       "description": "عطر نسائي فاخر 50 مل - Giordani Gold",
       "price": "",
       "category": "perfume",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد عطر جيورداني 50 مل"
     },
     {
@@ -214,7 +220,7 @@
       "description": "لوشن مرطب للجسم بالألوفيرا 200 مل",
       "price": "",
       "category": "body",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد لوشن الجسم 200 مل"
     },
     {
@@ -223,7 +229,7 @@
       "description": "زبدة جسم مغذية 200 مل",
       "price": "",
       "category": "body",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد زبدة الجسم 200 مل"
     },
     {
@@ -232,7 +238,7 @@
       "description": "كريم مغذي لليدين 75 مل",
       "price": "",
       "category": "body",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد كريم اليدين 75 مل"
     },
     {
@@ -241,15 +247,69 @@
       "description": "جل استحمام مغذي 250 مل",
       "price": "",
       "category": "body",
-      "image": "images/product-oriflame.svg",
+      "image": "images/fadora-logo.jpeg",
       "whatsapp": "أريد جل استحمام حليب وعسل 250 مل"
+    },
+    {
+      "id": "m1",
+      "name": "شامبو رجالي أوريفليم",
+      "description": "شامبو منعش للرجال 250 مل - Oriflame",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد شامبو رجالي أوريفليم"
+    },
+    {
+      "id": "m2",
+      "name": "جل حلاقة أوريفليم",
+      "description": "جل حلاقة مهدئ للبشرة 150 مل",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد جل حلاقة أوريفليم"
+    },
+    {
+      "id": "m3",
+      "name": "عطر رجالي جيورداني جولد",
+      "description": "عطر رجالي فاخر 75 مل - Giordani Gold",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد عطر جيورداني جولد رجالي"
+    },
+    {
+      "id": "m4",
+      "name": "كريم ما بعد الحلاقة",
+      "description": "كريم مهدئ ومنعش بعد الحلاقة 75 مل",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد كريم ما بعد الحلاقة"
+    },
+    {
+      "id": "m5",
+      "name": "سبراي عطر رجالي",
+      "description": "سبراي عطر رجالي منعش 100 مل",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد سبراي عطر رجالي"
+    },
+    {
+      "id": "m6",
+      "name": "مزيل عرق رجالي أوريفليم",
+      "description": "مزيل عرق رول أون للرجال 50 مل",
+      "price": "",
+      "category": "men",
+      "image": "images/fadora-logo.jpeg",
+      "whatsapp": "أريد مزيل عرق رجالي أوريفليم"
     }
   ],
   "offers": [
     {
       "id": "o1",
       "title": "🌸 بكج العناية الكاملة",
-      "description": "نوفيج كريم نهاري + ليلي + سيروم بسعر 95,000 (وفر 23,000)",
+      "description": "نوفيج كريم نهاري + ليلي + سيروم معاً",
       "image": "",
       "active": true,
       "createdAt": "2026-07-01"
@@ -257,7 +317,7 @@
     {
       "id": "o2",
       "title": "💇‍♀️ بكج الشعر المثالي",
-      "description": "شامبو + بلسم + ماسك شعر بسعر 48,000 (وفر 7,000)",
+      "description": "شامبو + بلسم + ماسك شعر معاً",
       "image": "",
       "active": true,
       "createdAt": "2026-07-01"
@@ -265,7 +325,7 @@
     {
       "id": "o3",
       "title": "🧴 بكج العناية بالجسم",
-      "description": "جل استحمام + لوشن + كريم يدين بسعر 32,000 (وفر 5,000)",
+      "description": "جل استحمام + لوشن + كريم يدين معاً",
       "image": "",
       "active": true,
       "createdAt": "2026-07-01"
