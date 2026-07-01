@@ -432,7 +432,7 @@ app.post('/api/products', authMiddleware, upload.single('image'), async (req, re
       description: req.body.description,
       price: req.body.price,
       category: req.body.category,
-      image: req.file ? `uploads/images/${req.file.filename}` : req.body.image || 'images/product-cream.svg',
+      image: req.file ? `uploads/images/${req.file.filename}` : req.body.image || 'images/product-oriflame.svg',
       whatsapp: `أريد ${req.body.name}`
     };
     res.json(await createProduct(product));

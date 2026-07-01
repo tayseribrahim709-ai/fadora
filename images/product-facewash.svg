@@ -1,8 +1,0 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
-  <rect x="30" y="45" width="60" height="90" rx="20" fill="#f0d8d0" stroke="#d4a898" stroke-width="2"/>
-  <rect x="35" y="40" width="50" height="15" rx="7" fill="#e4c8be" stroke="#d4a898" stroke-width="2"/>
-  <rect x="45" y="25" width="30" height="20" rx="4" fill="#d4a898"/>
-  <circle cx="60" cy="85" r="12" fill="#fff" opacity="0.4"/>
-  <circle cx="60" cy="85" r="6" fill="#fff" opacity="0.6"/>
-  <text x="60" y="118" text-anchor="middle" font-size="8" fill="#8b5a48" font-family="Arial">لطيف</text>
-</svg>

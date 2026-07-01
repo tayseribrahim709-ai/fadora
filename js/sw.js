@@ -10,16 +10,9 @@ const ASSETS = [
   '/admin/index.html',
   '/admin/admin.css',
   '/admin/admin.js',
-  '/images/icon-192.png',
-  '/images/icon-512.png',
-  '/images/product-cream.svg',
-  '/images/product-serum.svg',
-  '/images/product-facewash.svg',
-  '/images/product-sunscreen.svg',
-  '/images/product-shampoo.svg',
-  '/images/product-conditioner.svg',
-  '/images/product-hairoil.svg',
-  '/images/product-hairmask.svg',
+  '/images/icon-192.svg',
+  '/images/icon-512.svg',
+  '/images/product-oriflame.svg',
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800'
 ];
 
@@ -61,8 +54,8 @@ self.addEventListener('push', (event) => {
   const data = event.data?.json() || { title: 'عرض جديد', body: 'تفقدي أحدث العروض من Fadora' };
   const options = {
     body: data.body,
-    icon: '/images/icon-192.png',
-    badge: '/images/icon-192.png',
+    icon: '/images/icon-192.svg',
+    badge: '/images/icon-192.svg',
     vibrate: [200, 100, 200],
     data: { url: data.url || '/' }
   };
