@@ -8,6 +8,8 @@ if (langToggle) {
     langToggle.textContent = window.t('language');
     // Re-render dynamic content with new language
     if (categories.length) renderProductTabs();
+    loadOffers();
+    loadPopupAds();
   });
 }
 
@@ -175,7 +177,9 @@ function renderProductTabs() {
 
 function renderProductCards(products) {
   return products.map(p => {
-    const msg = encodeURIComponent(p.whatsapp || `أريد ${p.name}`);
+    const name = window.t ? (window.t('prod_' + p.id + '_name') || p.name) : p.name;
+    const desc = window.t ? (window.t('prod_' + p.id + '_desc') || p.description) : p.description;
+    const msg = encodeURIComponent(p.whatsapp || `أريد ${name}`);
     const img = p.image || '';
     const icons = {
       face: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><ellipse cx="50" cy="55" rx="35" ry="38" fill="rgba(255,111,97,0.2)" stroke="var(--primary)"/><rect x="38" y="28" width="24" height="14" rx="7" fill="rgba(255,111,97,0.3)" stroke="var(--primary)"/><circle cx="42" cy="55" r="4" fill="var(--primary)"/><circle cx="58" cy="55" r="4" fill="var(--primary)"/><path d="M40 67 Q50 75 60 67" stroke="var(--primary)"/></svg>`,
@@ -189,11 +193,11 @@ function renderProductCards(products) {
         <div class="product-card">
           <div class="product-img">
             <div class="default-icon">${defIcon}</div>
-            <img src="${img || 'images/product-oriflame.svg'}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" onload="this.style.display='block'">
+            <img src="${img || 'images/product-oriflame.svg'}" alt="${name}" loading="lazy" onerror="this.style.display='none'" onload="this.style.display='block'">
           </div>
           <div class="product-info">
-            <h2>${p.name}</h2>
-            <p>${p.description}</p>
+            <h2>${name}</h2>
+            <p>${desc}</p>
             <div class="product-bottom">
               <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-primary">${window.t ? window.t('orderNow') : 'اطلب الآن'}</a>
             </div>
