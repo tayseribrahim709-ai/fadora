@@ -84,19 +84,6 @@ window.addEventListener('scroll', () => {
 });
 
 /* ================= Product Tabs ================= */
-const PRODUCT_ICONS = {
-  face: 'images/product-face.svg',
-  body: 'images/product-body.svg',
-  moisturizing: 'images/product-face.svg',
-  hair: 'images/product-hair.svg',
-  married: 'images/product-face.svg',
-  weight: 'images/product-body.svg',
-  plasma: 'images/product-face.svg',
-  pregnancy: 'images/product-face.svg',
-  men: 'images/product-men.svg',
-  perfume: 'images/product-perfume.svg'
-};
-
 let categories = [];
 let allProducts = [];
 
@@ -200,7 +187,7 @@ function renderProductCards(products) {
         <div class="product-card">
           <div class="product-img">
             <div class="default-icon">${defIcon}</div>
-            <img src="${img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" onload="this.style.display='block'">
+            <img src="${img || 'images/product-oriflame.svg'}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" onload="this.style.display='block'">
           </div>
           <div class="product-info">
             <h2>${p.name}</h2>
@@ -296,7 +283,6 @@ contactForm.addEventListener('submit', (e) => {
 
   setTimeout(() => {
     window.open(`https://wa.me/249924643848?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
-    window.open(mailtoLink, '_blank');
     btn.textContent = 'تم الإرسال ✓';
     btn.style.background = '#5A7A6A';
 
@@ -331,12 +317,18 @@ document.querySelectorAll('.about-card, .product-card, .service-card, .testimoni
   observer.observe(el);
 });
 
-/* ================= PWA: Register Service Worker ================= */
+/* ================= PWA: Service Worker & Push Notifications ================= */
 if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('js/sw.js')
-      .then(() => console.log('✓ PWA: Service Worker registered'))
-      .catch(() => console.log('PWA: Service Worker registration failed'));
+    navigator.serviceWorker.register('js/sw.js').then(reg => {
+      console.log('✓ PWA: Service Worker registered');
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().then(perm => {
+          if (perm === 'granted') subscribePush(reg);
+        });
+      }
+      if (Notification.permission === 'granted') subscribePush(reg);
+    }).catch(() => console.log('PWA: Service Worker registration failed'));
   });
 }
 
@@ -430,19 +422,6 @@ async function loadPaymentDetails() {
     }
   } catch {}
 }
-
-/* ================= Service Worker & Push ================= */
-if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
-  navigator.serviceWorker.register('js/sw.js').then(reg => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission().then(perm => {
-        if (perm === 'granted') subscribePush(reg);
-      });
-    }
-    if (Notification.permission === 'granted') subscribePush(reg);
-  }).catch(() => {});
-}
-
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');

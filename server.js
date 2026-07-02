@@ -9,20 +9,29 @@ const { v4: uuidv4 } = require('uuid');
 const { Pool } = require('pg');
 const webpush = require('web-push');
 
-const VAPID_PUBLIC_KEY = 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';
-const VAPID_PRIVATE_KEY = '0b9zUtKHbPTjJFqlz2Bbazt8fcTUSMJCdzVnTNn3QPc';
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '0b9zUtKHbPTjJFqlz2Bbazt8fcTUSMJCdzVnTNn3QPc';
 webpush.setVapidDetails('mailto:faddo87@gmail.com', VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = 'fadora-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'fadora-secret-key-2026';
 const DB_PATH = path.join(__dirname, 'data', 'db.json');
 const USE_PG = !!process.env.DATABASE_URL;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
+
+// Serve static files safely - block sensitive files
+const BLOCKED = ['server.js', 'package.json', 'package-lock.json', '.env', '.gitignore', 'node_modules'];
+app.use((req, res, next) => {
+  if (BLOCKED.some(p => req.path === '/' + p || req.path.startsWith('/' + p + '/'))) {
+    return res.status(404).send();
+  }
+  next();
+});
+app.use(express.static(__dirname, { index: ['index.html'] }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ============ PostgreSQL (production) ============
@@ -361,7 +370,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 },
+  limits: { fileSize: 20 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedImages = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     const allowedVideos = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -419,18 +428,34 @@ app.put('/api/settings', authMiddleware, async (req, res) => {
 // ============ Notification ============
 let pushSubscriptions = [];
 
-app.post('/api/subscribe', (req, res) => {
+app.post('/api/subscribe', async (req, res) => {
   const sub = req.body;
   if (sub && sub.endpoint) {
     pushSubscriptions = pushSubscriptions.filter(s => s.endpoint !== sub.endpoint);
     pushSubscriptions.push(sub);
+    // Persist to PG if available
+    if (USE_PG) {
+      try {
+        await pgQuery('INSERT INTO push_subscriptions (endpoint, data) VALUES ($1, $2) ON CONFLICT (endpoint) DO UPDATE SET data = $2', [sub.endpoint, JSON.stringify(sub)]);
+      } catch {}
+    }
   }
   res.json({ success: true, count: pushSubscriptions.length });
 });
 
-app.post('/api/notify-offer', authMiddleware, (req, res) => {
+app.post('/api/notify-offer', authMiddleware, async (req, res) => {
   const { title, body } = req.body;
-  res.json({ success: true, sent: pushSubscriptions.length });
+  if (!pushSubscriptions.length) return res.json({ success: true, sent: 0 });
+  const payload = JSON.stringify({ title: title || 'Fadora', body: body || 'عرض جديد', url: '/' });
+  const results = await Promise.allSettled(pushSubscriptions.map(sub =>
+    webpush.sendNotification(sub, payload).catch(e => {
+      if (e.statusCode === 410) {
+        pushSubscriptions = pushSubscriptions.filter(s => s.endpoint !== sub.endpoint);
+        if (USE_PG) pgQuery('DELETE FROM push_subscriptions WHERE endpoint=$1', [sub.endpoint]).catch(() => {});
+      }
+    })
+  ));
+  res.json({ success: true, sent: results.filter(r => r.status === 'fulfilled').length, total: pushSubscriptions.length });
 });
 
 // ============ Categories Routes ============
@@ -630,27 +655,6 @@ app.get('/api/stats', authMiddleware, async (req, res) => {
     const videoCount = fs.existsSync(videosDir) ? fs.readdirSync(videosDir).length : 0;
     res.json({ products, offers, media, images: imageCount, videos: videoCount, categories, orders });
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
-});
-
-// ============ Push Notifications ============
-const subscriptions = [];
-
-app.post('/api/subscribe', (req, res) => {
-  const sub = req.body;
-  const exists = subscriptions.some(s => s.endpoint === sub.endpoint);
-  if (!exists) subscriptions.push(sub);
-  res.json({ success: true });
-});
-
-app.post('/api/send-notification', authMiddleware, async (req, res) => {
-  const { title, body, url } = req.body;
-  const payload = JSON.stringify({ title: title || 'Fadora', body: body || '', url: url || '/' });
-  const results = await Promise.allSettled(subscriptions.map(sub =>
-    webpush.sendNotification(sub, payload).catch(e => {
-      if (e.statusCode === 410) { const idx = subscriptions.indexOf(sub); if (idx >= 0) subscriptions.splice(idx, 1); }
-    })
-  ));
-  res.json({ success: true, sent: results.filter(r => r.status === 'fulfilled').length, total: subscriptions.length });
 });
 
 // ============ Popup Ads Routes ============

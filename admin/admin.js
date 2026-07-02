@@ -464,6 +464,8 @@ async function loadSettings() {
     document.getElementById('setTwitter').value = s.social?.twitter || '';
     document.getElementById('setSnapchat').value = s.social?.snapchat || '';
     document.getElementById('setFacebook').value = s.social?.facebook || '';
+    document.getElementById('setTiktok').value = s.social?.tiktok || '';
+    document.getElementById('setWhatsapp').value = s.social?.whatsapp || '';
     document.getElementById('setBankName').value = s.payment?.bankName || '';
     document.getElementById('setAccountName').value = s.payment?.accountName || '';
     document.getElementById('setAccountNumber').value = s.payment?.accountNumber || '';
@@ -477,13 +479,16 @@ document.getElementById('saveSettingsBtn')?.addEventListener('click', async () =
     const body = {
       ...existing,
       social: {
+        ...existing.social,
         instagram: document.getElementById('setInstagram').value,
         twitter: document.getElementById('setTwitter').value,
         snapchat: document.getElementById('setSnapchat').value,
         facebook: document.getElementById('setFacebook').value,
-        whatsapp: '249924643848'
+        tiktok: document.getElementById('setTiktok')?.value || existing.social?.tiktok || '',
+        whatsapp: document.getElementById('setWhatsapp')?.value || existing.social?.whatsapp || ''
       },
       payment: {
+        ...existing.payment,
         bankName: document.getElementById('setBankName').value,
         accountName: document.getElementById('setAccountName').value,
         accountNumber: document.getElementById('setAccountNumber').value,

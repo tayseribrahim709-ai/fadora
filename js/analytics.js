@@ -34,7 +34,7 @@ document.addEventListener('click', (e) => {
   const link = e.target.closest('a[href*="wa.me"]');
   if (link) {
     const productCard = link.closest('.product-card');
-    const name = productCard?.querySelector('h3')?.textContent || 'عرض';
+    const name = productCard?.querySelector('h2')?.textContent || 'عرض';
     trackWhatsAppClick(name);
   }
 });

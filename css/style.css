@@ -420,7 +420,7 @@ section {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--primary-dark), #00796B);
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -865,10 +865,11 @@ section {
   text-align: center;
 }
 
-.product-info h3 {
+.product-info h2 {
   font-size: 1.05rem;
   margin-bottom: 8px;
   color: var(--text);
+  font-weight: 700;
 }
 
 .product-info p {
@@ -1552,10 +1553,10 @@ footer {
   justify-content: center;
   padding: 20px;
   backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease;
+  animation: fadeInOverlay 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInOverlay {
   from { opacity: 0; }
   to { opacity: 1; }
 }

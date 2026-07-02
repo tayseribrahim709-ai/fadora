@@ -10,14 +10,19 @@ const ASSETS = [
   '/admin/index.html',
   '/admin/admin.css',
   '/admin/admin.js',
-  '/images/fadora-logo.jpeg',
-  '/images/product-oriflame.svg',
-  'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800'
+  '/images/fadora-logo.svg',
+  '/images/fadora-logo-full.svg',
+  '/images/product-oriflame.svg'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS).catch(() => {
+        // Cache individual assets if bulk fails
+        ASSETS.forEach(url => cache.add(url).catch(() => {}));
+      });
+    })
   );
   self.skipWaiting();
 });
@@ -55,8 +60,8 @@ self.addEventListener('push', (event) => {
   const data = event.data?.json() || { title: 'عرض جديد', body: 'تفقدي أحدث العروض من Fadora' };
   const options = {
     body: data.body,
-    icon: '/images/fadora-logo.jpeg',
-    badge: '/images/fadora-logo.jpeg',
+    icon: '/images/fadora-logo.svg',
+    badge: '/images/fadora-logo.svg',
     vibrate: [200, 100, 200],
     data: { url: data.url || '/' }
   };
