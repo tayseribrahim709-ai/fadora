@@ -157,19 +157,18 @@ function renderProductCards(products) {
     const msg = encodeURIComponent(p.whatsapp || `أريد ${p.name}`);
     const img = p.image || PRODUCT_ICONS[p.category] || 'images/products/face-1.jpg';
     return `
-      <div class="product-card">
-        <div class="product-img">
-          <img src="${img}" alt="${p.name}" class="product-svg" loading="lazy" onerror="this.src='images/product-${p.category}.svg'">
-        </div>
-        <div class="product-info">
-          <h3>${p.name}</h3>
-          <p>${p.description}</p>
-          <div class="product-bottom">
-            ${p.price ? `<span class="product-price">${p.price}</span>` : ''}
-            <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-sm">اطلب الآن</a>
+        <div class="product-card">
+          <div class="product-img">
+            <img src="${img}" alt="${p.name}" class="product-svg" loading="lazy" onerror="this.src='images/product-${p.category}.svg'">
+          </div>
+          <div class="product-info">
+            <h2>${p.name}</h2>
+            <p>${p.description}</p>
+            <div class="product-bottom">
+              <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-primary">اطلب الآن</a>
+            </div>
           </div>
         </div>
-      </div>
     `;
   }).join('');
 }
