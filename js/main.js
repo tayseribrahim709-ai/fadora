@@ -187,17 +187,26 @@ function renderProductTabs() {
 function renderProductCards(products) {
   return products.map(p => {
     const msg = encodeURIComponent(p.whatsapp || `أريد ${p.name}`);
-    const img = p.image || PRODUCT_ICONS[p.category] || 'images/products/face-1.jpg';
+    const img = p.image || '';
+    const icons = {
+      face: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><ellipse cx="50" cy="55" rx="35" ry="38" fill="rgba(255,111,97,0.2)" stroke="var(--primary)"/><rect x="38" y="28" width="24" height="14" rx="7" fill="rgba(255,111,97,0.3)" stroke="var(--primary)"/><circle cx="42" cy="55" r="4" fill="var(--primary)"/><circle cx="58" cy="55" r="4" fill="var(--primary)"/><path d="M40 67 Q50 75 60 67" stroke="var(--primary)"/></svg>`,
+      hair: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"><path d="M30 85 Q35 30 50 20 Q65 30 70 85" fill="rgba(0,150,136,0.2)" stroke="var(--secondary)"/><path d="M35 80 Q40 40 50 30 Q60 40 65 80" fill="rgba(0,150,136,0.15)" stroke="var(--secondary)" stroke-width="3"/><path d="M45 25 Q48 15 50 12 Q52 15 55 25" stroke="var(--secondary)" stroke-width="3"/></svg>`,
+      perfume: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"><rect x="35" y="20" width="30" height="55" rx="10" fill="rgba(156,39,176,0.2)" stroke="#9C27B0"/><rect x="40" y="10" width="20" height="15" rx="3" fill="rgba(156,39,176,0.3)" stroke="#9C27B0"/><circle cx="50" cy="48" r="6" fill="rgba(156,39,176,0.3)" stroke="#9C27B0"/><path d="M38 60 Q50 68 62 60" stroke="#9C27B0"/><rect x="42" y="70" width="16" height="6" rx="2" fill="rgba(156,39,176,0.3)" stroke="#9C27B0"/></svg>`,
+      body: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"><rect x="30" y="22" width="40" height="45" rx="18" fill="rgba(255,152,0,0.2)" stroke="#FF9800"/><circle cx="50" cy="40" r="10" fill="rgba(255,152,0,0.3)" stroke="#FF9800"/><path d="M35 52 Q50 60 65 52" stroke="#FF9800"/><rect x="38" y="62" width="24" height="18" rx="4" fill="rgba(255,152,0,0.2)" stroke="#FF9800"/></svg>`,
+      men: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"><circle cx="50" cy="30" r="18" fill="rgba(33,150,243,0.2)" stroke="#2196F3"/><path d="M32 58 Q50 65 68 58" stroke="#2196F3"/><path d="M35 60 L30 95" stroke="#2196F3"/><path d="M65 60 L70 95" stroke="#2196F3"/><path d="M30 72 L70 72" stroke="#2196F3" stroke-width="3"/><rect x="42" y="30" width="8" height="3" rx="1" fill="#2196F3"/><rect x="52" y="30" width="8" height="3" rx="1" fill="#2196F3"/></svg>`
+    };
+    const defIcon = icons[p.category] || icons.face;
     return `
         <div class="product-card">
           <div class="product-img">
-            <img src="${img}" alt="${p.name}" class="product-svg" loading="lazy" onerror="this.src='images/product-${p.category}.svg'">
+            <div class="default-icon">${defIcon}</div>
+            <img src="${img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" onload="this.style.display='block'">
           </div>
           <div class="product-info">
             <h2>${p.name}</h2>
             <p>${p.description}</p>
             <div class="product-bottom">
-              <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-primary">اطلب الآن</a>
+              <a href="https://wa.me/249924643848?text=${msg}" target="_blank" class="btn btn-primary">${window.t ? window.t('orderNow') : 'اطلب الآن'}</a>
             </div>
           </div>
         </div>
