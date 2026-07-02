@@ -6,10 +6,13 @@ if (langToggle) {
     const next = cur === 'ar' ? 'en' : 'ar';
     window.setLang(next);
     langToggle.textContent = window.t('language');
-    // Re-render dynamic content with new language
+    // Re-render all dynamic content with new language
     if (categories.length) renderProductTabs();
     loadOffers();
     loadPopupAds();
+    loadSocialLinks();
+    loadPaymentDetails();
+  });
   });
 }
 
@@ -369,15 +372,17 @@ function renderOffers(active) {
   }
   if (section) section.style.display = 'block';
   container.innerHTML = active.map(o => {
+    const title = window.t ? (window.t('offer_' + o.id + '_title') || o.title) : o.title;
+    const desc = window.t ? (window.t('offer_' + o.id + '_desc') || o.description) : o.description;
     const bg = o.image
       ? `url('${o.image}') center/cover`
       : 'linear-gradient(135deg, var(--primary-light), var(--primary))';
     return `
       <div class="offer-card" style="background: ${bg};">
         <div class="offer-content">
-          <h3>${o.title}</h3>
-          <p>${o.description}</p>
-          <a href="https://wa.me/249924643848?text=${encodeURIComponent(`أريد عرض ${o.title}`)}" target="_blank" class="btn btn-primary">${window.t ? window.t('bookOffer') : 'احجز العرض'}</a>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+          <a href="https://wa.me/249924643848?text=${encodeURIComponent(`أريد عرض ${title}`)}" target="_blank" class="btn btn-primary">${window.t ? window.t('bookOffer') : 'احجز العرض'}</a>
         </div>
       </div>
     `;

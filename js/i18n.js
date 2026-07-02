@@ -76,7 +76,23 @@ const i18n = {
     category_hair: 'العناية بالشعر',
     category_perfume: 'العطور',
     category_body: 'العناية بالجسم',
-    category_men: 'قسم الرجال'
+    category_men: 'قسم الرجال',
+    locationText: 'الخرطوم',
+    testi1_text: 'منتجات رائعة حقاً! بشرتي صارت أكثر نضارة وإشراقاً من أول أسبوع استخدام',
+    testi1_name: 'نورة',
+    testi1_role: 'عميلة مميزة',
+    testi2_text: 'شعري صار أكثر كثافة ولمعاناً بفضل زيت الشعر الفاخر. أنصح الجميع به',
+    testi2_name: 'سارة',
+    testi2_role: 'عميلة مميزة',
+    testi3_text: 'كريم الترطيب العميق منقذ للبشرة الجافة! تركيبته خفيفة وسريعة الامتصاص',
+    testi3_name: 'مريم',
+    testi3_role: 'عميلة مميزة',
+    offer_o1_title: '🌸 بكج العناية الكاملة',
+    offer_o1_desc: 'نوفيج كريم نهاري + ليلي + سيروم معاً',
+    offer_o2_title: '💇‍♀️ بكج الشعر المثالي',
+    offer_o2_desc: 'شامبو + بلسم + ماسك شعر معاً',
+    offer_o3_title: '🧴 بكج العناية بالجسم',
+    offer_o3_desc: 'جل استحمام + لوشن + كريم يدين معاً'
   },
   en: {
     siteName: 'Fadora',
@@ -156,6 +172,22 @@ const i18n = {
     category_perfume: 'Perfumes',
     category_body: 'Body Care',
     category_men: "Men's Section",
+    locationText: 'Khartoum',
+    testi1_text: 'Absolutely amazing products! My skin became more radiant and glowing from the first week of use',
+    testi1_name: 'Noura',
+    testi1_role: 'VIP Customer',
+    testi2_text: 'My hair became thicker and shinier thanks to the luxury hair oil. I recommend it to everyone',
+    testi2_name: 'Sara',
+    testi2_role: 'VIP Customer',
+    testi3_text: 'The deep moisturizing cream is a lifesaver for dry skin! Light texture and quick absorption',
+    testi3_name: 'Mariam',
+    testi3_role: 'VIP Customer',
+    offer_o1_title: '🌸 Complete Care Package',
+    offer_o1_desc: 'Novage Day Cream + Night Cream + Serum together',
+    offer_o2_title: '💇‍♀️ Perfect Hair Package',
+    offer_o2_desc: 'Shampoo + Conditioner + Hair Mask together',
+    offer_o3_title: '🧴 Body Care Package',
+    offer_o3_desc: 'Shower Gel + Lotion + Hand Cream together',
     prod_f1_name: 'Novage Day Cream',
     prod_f1_desc: 'Anti-aging day cream 50 ml',
     prod_f2_name: 'Novage Night Cream',
@@ -243,6 +275,11 @@ function applyTranslations() {
   });
   document.querySelectorAll('[data-i18n-alt]').forEach(el => {
     el.alt = t(el.dataset.i18nAlt);
+  });
+  // Update avatars with first letter of translated name
+  document.querySelectorAll('[data-avatar]').forEach(el => {
+    const name = t(el.dataset.avatar);
+    el.textContent = name.charAt(0);
   });
 }
 
