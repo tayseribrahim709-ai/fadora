@@ -339,7 +339,7 @@ function renderOffers(active) {
         <div class="offer-content">
           <h3>${o.title}</h3>
           <p>${o.description}</p>
-          <a href="https://wa.me/249924643848?text=${encodeURIComponent(`أريد عرض ${o.title}`)}" target="_blank" class="btn btn-primary">احجز العرض</a>
+          <a href="https://wa.me/249924643848?text=${encodeURIComponent(`أريد عرض ${o.title}`)}" target="_blank" class="btn btn-primary">${window.t ? window.t('bookOffer') : 'احجز العرض'}</a>
         </div>
       </div>
     `;
