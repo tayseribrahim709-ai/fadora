@@ -11,6 +11,7 @@
   --primary-light: #FFE4E0;
   --secondary: #009688;
   --secondary-light: #E0F2F1;
+  --tertiary: #C4956A;
   --bg: #FFF5F3;
   --bg-alt: #FFEAE5;
   --surface: #FFFFFF;
@@ -28,6 +29,12 @@
   --footer-bg: #1A1A2E;
   --input-bg: var(--bg);
   --border-color: rgba(255, 111, 97, 0.15);
+  --logo-size: 48px;
+  --gradient-1: #FF6F61;
+  --gradient-2: #009688;
+  --badge-bg: var(--primary);
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
 }
 
 [data-theme="dark"] {
@@ -35,6 +42,7 @@
   --primary-dark: #E85A4F;
   --primary-light: #3D1E1C;
   --secondary: #4DB6AC;
+  --tertiary: #C4956A;
   --bg: #121212;
   --bg-alt: #1E1E1E;
   --surface: #252525;
@@ -48,6 +56,295 @@
   --footer-bg: #0A0A0A;
   --input-bg: #252525;
   --border-color: rgba(255, 111, 97, 0.12);
+  --logo-size: 48px;
+  --gradient-1: #FF6F61;
+  --gradient-2: #4DB6AC;
+  --badge-bg: var(--primary);
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: سوداني بحت (Pure Sudanese) ================= */
+[data-theme="sudani"] {
+  --primary: #00613C;
+  --primary-dark: #004D2F;
+  --primary-light: #D4E8D4;
+  --secondary: #C8A951;
+  --secondary-light: #F5EDD6;
+  --tertiary: #8B0000;
+  --bg: #F5F0E8;
+  --bg-alt: #EDE5D8;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --text-light: #5C5C5C;
+  --text-lighter: #8E8E8E;
+  --nav-bg: rgba(245, 240, 232, 0.95);
+  --hero-bg: linear-gradient(135deg, #00613C 0%, #C8A951 50%, #8B0000 100%);
+  --footer-bg: #00613C;
+  --border-color: rgba(0, 97, 60, 0.15);
+  --shadow: 0 4px 20px rgba(0, 97, 60, 0.08);
+  --shadow-lg: 0 8px 40px rgba(0, 97, 60, 0.12);
+  --input-bg: #F5F0E8;
+  --gradient-1: #00613C;
+  --gradient-2: #C8A951;
+  --badge-bg: #C8A951;
+  --badge-text: #1A1A1A;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: اعلاني للمنتجات (Product Advertising) ================= */
+[data-theme="advertising"] {
+  --primary: #FF3366;
+  --primary-dark: #E62E5C;
+  --primary-light: #FFE8EE;
+  --secondary: #00BFFF;
+  --secondary-light: #E5F7FF;
+  --tertiary: #FFD700;
+  --bg: #FFFFFF;
+  --bg-alt: #F5F5FF;
+  --surface: #FFFFFF;
+  --text: #0D0D2B;
+  --text-light: #4A4A6A;
+  --text-lighter: #8A8AAA;
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --hero-bg: linear-gradient(135deg, #FF3366 0%, #00BFFF 50%, #FFD700 100%);
+  --footer-bg: #0D0D2B;
+  --border-color: rgba(255, 51, 102, 0.15);
+  --shadow: 0 4px 20px rgba(255, 51, 102, 0.08);
+  --shadow-lg: 0 8px 40px rgba(255, 51, 102, 0.15);
+  --input-bg: #FFFFFF;
+  --gradient-1: #FF3366;
+  --gradient-2: #00BFFF;
+  --badge-bg: #FF3366;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px) scale(1.02);
+}
+
+/* ================= Theme: رجالي (Men's) ================= */
+[data-theme="mens"] {
+  --primary: #2C3E50;
+  --primary-dark: #1A252F;
+  --primary-light: #D6DBDF;
+  --secondary: #34495E;
+  --secondary-light: #EAECEE;
+  --tertiary: #E67E22;
+  --bg: #F4F6F7;
+  --bg-alt: #E8ECEF;
+  --surface: #FFFFFF;
+  --text: #1C2833;
+  --text-light: #566573;
+  --text-lighter: #909497;
+  --nav-bg: rgba(44, 62, 80, 0.95);
+  --hero-bg: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #1A252F 100%);
+  --footer-bg: #1A252F;
+  --border-color: rgba(44, 62, 80, 0.15);
+  --shadow: 0 4px 20px rgba(44, 62, 80, 0.08);
+  --shadow-lg: 0 8px 40px rgba(44, 62, 80, 0.12);
+  --input-bg: #F4F6F7;
+  --gradient-1: #2C3E50;
+  --gradient-2: #E67E22;
+  --badge-bg: #E67E22;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: اطفالي (Children's) ================= */
+[data-theme="kids"] {
+  --primary: #FF6B9D;
+  --primary-dark: #E55A8A;
+  --primary-light: #FFE8F0;
+  --secondary: #45D6B5;
+  --secondary-light: #D4F5ED;
+  --tertiary: #FFD93D;
+  --bg: #FFF8F0;
+  --bg-alt: #FFF0E0;
+  --surface: #FFFFFF;
+  --text: #2D1B2E;
+  --text-light: #6B4E6D;
+  --text-lighter: #9A819C;
+  --nav-bg: rgba(255, 248, 240, 0.95);
+  --hero-bg: linear-gradient(135deg, #FF6B9D 0%, #45D6B5 30%, #FFD93D 70%, #FF8A5C 100%);
+  --footer-bg: #2D1B2E;
+  --border-color: rgba(255, 107, 157, 0.15);
+  --shadow: 0 4px 20px rgba(255, 107, 157, 0.08);
+  --shadow-lg: 0 8px 40px rgba(255, 107, 157, 0.12);
+  --input-bg: #FFF8F0;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --gradient-1: #FF6B9D;
+  --gradient-2: #45D6B5;
+  --badge-bg: #FFD93D;
+  --badge-text: #2D1B2E;
+  --card-hover: translateY(-6px) rotate(-1deg);
+}
+
+/* ================= Theme: للموضه (Fashion) ================= */
+[data-theme="fashion"] {
+  --primary: #7B2D8E;
+  --primary-dark: #5E1F6E;
+  --primary-light: #EDE0F0;
+  --secondary: #E8A0BF;
+  --secondary-light: #F5E6ED;
+  --tertiary: #FFD700;
+  --bg: #FCF7FA;
+  --bg-alt: #F8EFF4;
+  --surface: #FFFFFF;
+  --text: #1A0A1E;
+  --text-light: #5C3A60;
+  --text-lighter: #8E6A92;
+  --nav-bg: rgba(252, 247, 250, 0.95);
+  --hero-bg: linear-gradient(135deg, #7B2D8E 0%, #E8A0BF 50%, #FFD700 100%);
+  --footer-bg: #1A0A1E;
+  --border-color: rgba(123, 45, 142, 0.12);
+  --shadow: 0 4px 20px rgba(123, 45, 142, 0.08);
+  --shadow-lg: 0 8px 40px rgba(123, 45, 142, 0.12);
+  --input-bg: #FCF7FA;
+  --font: 'Tajawal', 'Playfair Display', 'Segoe UI', Tahoma, sans-serif;
+  --gradient-1: #7B2D8E;
+  --gradient-2: #E8A0BF;
+  --badge-bg: #7B2D8E;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: ذهبي (Gold Luxury) ================= */
+[data-theme="gold"] {
+  --primary: #B8860B;
+  --primary-dark: #8B6508;
+  --primary-light: #F5E6B8;
+  --secondary: #DAA520;
+  --secondary-light: #F5EDD0;
+  --tertiary: #8B4513;
+  --bg: #FEFCF3;
+  --bg-alt: #FAF5E6;
+  --surface: #FFFFFF;
+  --text: #1A1108;
+  --text-light: #5C4A28;
+  --text-lighter: #8E7A50;
+  --nav-bg: rgba(254, 252, 243, 0.95);
+  --hero-bg: linear-gradient(135deg, #B8860B 0%, #DAA520 30%, #F5E6B8 60%, #8B4513 100%);
+  --footer-bg: #1A1108;
+  --border-color: rgba(184, 134, 11, 0.12);
+  --shadow: 0 4px 20px rgba(184, 134, 11, 0.1);
+  --shadow-lg: 0 8px 40px rgba(184, 134, 11, 0.18);
+  --input-bg: #FEFCF3;
+  --gradient-1: #B8860B;
+  --gradient-2: #DAA520;
+  --badge-bg: #DAA520;
+  --badge-text: #1A1108;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: وردي (Rose) ================= */
+[data-theme="rose"] {
+  --primary: #D4587A;
+  --primary-dark: #B84366;
+  --primary-light: #FCE4EC;
+  --secondary: #E8A0BF;
+  --secondary-light: #F5E6ED;
+  --tertiary: #2E7D32;
+  --bg: #FFF5F7;
+  --bg-alt: #FCE8EE;
+  --surface: #FFFFFF;
+  --text: #1A0A0E;
+  --text-light: #5C3A40;
+  --text-lighter: #8E6A72;
+  --nav-bg: rgba(255, 245, 247, 0.95);
+  --hero-bg: linear-gradient(135deg, #D4587A 0%, #E8A0BF 30%, #FCE4EC 60%, #D4587A 100%);
+  --footer-bg: #1A0A0E;
+  --border-color: rgba(212, 88, 122, 0.1);
+  --shadow: 0 4px 20px rgba(212, 88, 122, 0.08);
+  --shadow-lg: 0 8px 40px rgba(212, 88, 122, 0.12);
+  --input-bg: #FFF5F7;
+  --gradient-1: #D4587A;
+  --gradient-2: #E8A0BF;
+  --badge-bg: #D4587A;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: طبيعي (Natural) ================= */
+[data-theme="natural"] {
+  --primary: #4A7C59;
+  --primary-dark: #3A6346;
+  --primary-light: #E8F0E8;
+  --secondary: #8B9D6E;
+  --secondary-light: #EDF2E8;
+  --tertiary: #A0522D;
+  --bg: #F7FAF5;
+  --bg-alt: #EEF4EA;
+  --surface: #FFFFFF;
+  --text: #1A1A14;
+  --text-light: #5C5C50;
+  --text-lighter: #8E8E80;
+  --nav-bg: rgba(247, 250, 245, 0.95);
+  --hero-bg: linear-gradient(135deg, #4A7C59 0%, #8B9D6E 30%, #A0522D 60%, #4A7C59 100%);
+  --footer-bg: #1A1A14;
+  --border-color: rgba(74, 124, 89, 0.12);
+  --shadow: 0 4px 20px rgba(74, 124, 89, 0.08);
+  --shadow-lg: 0 8px 40px rgba(74, 124, 89, 0.12);
+  --input-bg: #F7FAF5;
+  --gradient-1: #4A7C59;
+  --gradient-2: #8B9D6E;
+  --badge-bg: #8B9D6E;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: بحري (Ocean) ================= */
+[data-theme="ocean"] {
+  --primary: #006994;
+  --primary-dark: #005077;
+  --primary-light: #D4ECF5;
+  --secondary: #00B4D8;
+  --secondary-light: #E0F5FA;
+  --tertiary: #0077B6;
+  --bg: #F0F8FF;
+  --bg-alt: #E0F0FF;
+  --surface: #FFFFFF;
+  --text: #0A1628;
+  --text-light: #3A5068;
+  --text-lighter: #7A90A8;
+  --nav-bg: rgba(240, 248, 255, 0.95);
+  --hero-bg: linear-gradient(135deg, #006994 0%, #00B4D8 30%, #0077B6 60%, #90E0EF 100%);
+  --footer-bg: #0A1628;
+  --border-color: rgba(0, 105, 148, 0.1);
+  --shadow: 0 4px 20px rgba(0, 105, 148, 0.08);
+  --shadow-lg: 0 8px 40px rgba(0, 105, 148, 0.12);
+  --input-bg: #F0F8FF;
+  --gradient-1: #006994;
+  --gradient-2: #00B4D8;
+  --badge-bg: #00B4D8;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
+}
+
+/* ================= Theme: كلاسيك (Classic) ================= */
+[data-theme="classic"] {
+  --primary: #8B4513;
+  --primary-dark: #6B3410;
+  --primary-light: #F0E4D4;
+  --secondary: #2F4F4F;
+  --secondary-light: #E0E8E8;
+  --tertiary: #C4956A;
+  --bg: #FAF5EF;
+  --bg-alt: #F0E8DE;
+  --surface: #FFFFFF;
+  --text: #1A1410;
+  --text-light: #5C5048;
+  --text-lighter: #8E8078;
+  --nav-bg: rgba(250, 245, 239, 0.95);
+  --hero-bg: linear-gradient(135deg, #8B4513 0%, #2F4F4F 50%, #C4956A 100%);
+  --footer-bg: #1A1410;
+  --border-color: rgba(139, 69, 19, 0.12);
+  --shadow: 0 4px 20px rgba(139, 69, 19, 0.08);
+  --shadow-lg: 0 8px 40px rgba(139, 69, 19, 0.12);
+  --input-bg: #FAF5EF;
+  --gradient-1: #8B4513;
+  --gradient-2: #2F4F4F;
+  --badge-bg: #C4956A;
+  --badge-text: #fff;
+  --card-hover: translateY(-6px);
 }
 
 html {
@@ -168,36 +465,49 @@ section {
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: var(--logo-size, 48px);
+  height: var(--logo-size, 48px);
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 12px;
+  border-radius: 14px;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: var(--transition);
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .logo-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   fill: white;
 }
 
 .logo h1 {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1.2;
+  text-shadow: none;
+  letter-spacing: -0.5px;
 }
 
 .logo-sub {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--text-light);
   display: block;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .nav-links {

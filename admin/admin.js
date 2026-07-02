@@ -472,22 +472,24 @@ async function loadSettings() {
 }
 
 document.getElementById('saveSettingsBtn')?.addEventListener('click', async () => {
-  const body = {
-    social: {
-      instagram: document.getElementById('setInstagram').value,
-      twitter: document.getElementById('setTwitter').value,
-      snapchat: document.getElementById('setSnapchat').value,
-      facebook: document.getElementById('setFacebook').value,
-      whatsapp: '249924643848'
-    },
-    payment: {
-      bankName: document.getElementById('setBankName').value,
-      accountName: document.getElementById('setAccountName').value,
-      accountNumber: document.getElementById('setAccountNumber').value,
-      cashOnDelivery: document.getElementById('setCashOnDelivery').checked
-    }
-  };
   try {
+    const existing = await api('GET', '/api/settings');
+    const body = {
+      ...existing,
+      social: {
+        instagram: document.getElementById('setInstagram').value,
+        twitter: document.getElementById('setTwitter').value,
+        snapchat: document.getElementById('setSnapchat').value,
+        facebook: document.getElementById('setFacebook').value,
+        whatsapp: '249924643848'
+      },
+      payment: {
+        bankName: document.getElementById('setBankName').value,
+        accountName: document.getElementById('setAccountName').value,
+        accountNumber: document.getElementById('setAccountNumber').value,
+        cashOnDelivery: document.getElementById('setCashOnDelivery').checked
+      }
+    };
     await api('PUT', '/api/settings', body);
     showToast('تم حفظ الإعدادات');
   } catch {}
@@ -534,6 +536,95 @@ function urlBase64ToUint8Array(base64String) {
   return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
 }
 
+// ============ Themes ============
+const THEMES = [
+  { id: 'default', name: 'افتراضي', desc: 'ألوان Fadora الأصلية', colors: ['#FF6F61', '#009688', '#FFE4E0', '#FFF5F3'] },
+  { id: 'dark', name: 'ليلي', desc: 'وضع الليل المظلم', colors: ['#FF6F61', '#4DB6AC', '#3D1E1C', '#121212'] },
+  { id: 'sudani', name: 'سوداني بحت', desc: 'أخضر العلم السوداني', colors: ['#00613C', '#C8A951', '#8B0000', '#F5F0E8'] },
+  { id: 'advertising', name: 'إعلاني', desc: 'ألوان جريئة للترويج', colors: ['#FF3366', '#00BFFF', '#FFD700', '#FFFFFF'] },
+  { id: 'mens', name: 'رجالي', desc: 'ألوان كلاسيكية رجالية', colors: ['#2C3E50', '#34495E', '#E67E22', '#F4F6F7'] },
+  { id: 'kids', name: 'أطفالي', desc: 'ألوان مرح وأطفال', colors: ['#FF6B9D', '#45D6B5', '#FFD93D', '#FFF8F0'] },
+  { id: 'fashion', name: 'موضة', desc: 'ألوان أنيقة وعصرية', colors: ['#7B2D8E', '#E8A0BF', '#FFD700', '#FCF7FA'] },
+  { id: 'gold', name: 'ذهبي', desc: 'فخامة الذهب', colors: ['#B8860B', '#DAA520', '#F5E6B8', '#FEFCF3'] },
+  { id: 'rose', name: 'وردي', desc: 'أنوثة وردية ناعمة', colors: ['#D4587A', '#E8A0BF', '#FCE4EC', '#FFF5F7'] },
+  { id: 'natural', name: 'طبيعي', desc: 'ألوان الطبيعة', colors: ['#4A7C59', '#8B9D6E', '#A0522D', '#F7FAF5'] },
+  { id: 'ocean', name: 'بحري', desc: 'ألوان المحيط', colors: ['#006994', '#00B4D8', '#0077B6', '#F0F8FF'] },
+  { id: 'classic', name: 'كلاسيك', desc: 'ألوان كلاسيكية أنيقة', colors: ['#8B4513', '#2F4F4F', '#C4956A', '#FAF5EF'] }
+];
+
+let currentTheme = 'default';
+
+function renderThemeCards() {
+  const container = document.getElementById('themesContainer');
+  if (!container) return;
+  container.innerHTML = THEMES.map(t => `
+    <div class="theme-card ${t.id === currentTheme ? 'active' : ''}" data-theme-id="${t.id}" onclick="selectTheme('${t.id}')">
+      <div class="theme-check">✓</div>
+      <div class="theme-swatch" style="background:${t.colors[3]}">
+        ${t.colors.map(c => `<span style="background:${c}"></span>`).join('')}
+      </div>
+      <div class="theme-name">${t.name}</div>
+      <div class="theme-desc">${t.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectTheme(id) {
+  currentTheme = id;
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.theme-card[data-theme-id="${id}"]`)?.classList.add('active');
+  // Apply preview
+  const theme = THEMES.find(t => t.id === id);
+  if (theme) updatePreview(theme);
+}
+
+function updatePreview(theme) {
+  const preview = document.getElementById('themePreview');
+  if (!preview) return;
+  preview.style.display = 'block';
+  const header = document.getElementById('previewHeader');
+  const body = document.getElementById('previewBody');
+  const product = document.getElementById('previewProduct');
+  if (header) {
+    header.style.background = `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[1]})`;
+    header.style.color = '#fff';
+  }
+  if (body) body.style.background = theme.colors[3];
+  if (product) {
+    const img = product.querySelector('.preview-img');
+    const title = product.querySelector('.preview-title');
+    const desc = product.querySelector('.preview-desc');
+    const btn = product.querySelector('.preview-btn');
+    if (img) img.style.background = `linear-gradient(135deg, ${theme.colors[2]}, ${theme.colors[0]}30)`;
+    if (title) title.style.background = theme.colors[0];
+    if (desc) desc.style.background = theme.colors[1] + '50';
+    if (btn) btn.style.background = `linear-gradient(90deg, ${theme.colors[0]}, ${theme.colors[1]})`;
+  }
+}
+
+async function loadTheme() {
+  try {
+    const s = await api('GET', '/api/settings');
+    currentTheme = s.theme || 'default';
+    renderThemeCards();
+    const theme = THEMES.find(t => t.id === currentTheme);
+    if (theme) updatePreview(theme);
+  } catch {
+    renderThemeCards();
+  }
+}
+
+document.getElementById('saveThemeBtn')?.addEventListener('click', async () => {
+  try {
+    const s = await api('GET', '/api/settings');
+    s.theme = currentTheme;
+    await api('PUT', '/api/settings', s);
+    showToast('✓ تم حفظ الثيم');
+  } catch {
+    showToast('فشل حفظ الثيم', true);
+  }
+});
+
 // ============ Tabs ============
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -546,4 +637,4 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 
 // ============ Init ============
 checkAuth();
-if (token) { loadAll(); loadCategories(); loadSettings(); loadReports(); subscribePush(); }
+if (token) { loadAll(); loadCategories(); loadSettings(); loadReports(); loadTheme(); subscribePush(); }

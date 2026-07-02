@@ -9,19 +9,51 @@ if (langToggle) {
   });
 }
 
-/* ================= Dark Mode ================= */
+/* ================= Theme System ================= */
 const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('theme') || 'light';
+let currentTheme = localStorage.getItem('fadoraTheme') || 'default';
 
-if (savedTheme === 'dark') {
-  document.documentElement.setAttribute('data-theme', 'dark');
+async function loadSiteTheme() {
+  try {
+    const res = await fetch('/api/settings');
+    if (res.ok) {
+      const s = await res.json();
+      if (s.theme) {
+        currentTheme = s.theme;
+        localStorage.setItem('fadoraTheme', currentTheme);
+      }
+    }
+  } catch {}
+  applyTheme(currentTheme);
+  updateToggleIcon();
+}
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('fadoraTheme', theme);
+}
+
+function getNextTheme(theme) {
+  const themes = ['default', 'dark', 'sudani', 'advertising', 'mens', 'kids', 'fashion', 'gold', 'rose', 'natural', 'ocean', 'classic'];
+  const idx = themes.indexOf(theme);
+  return idx >= 0 ? themes[(idx + 1) % themes.length] : 'default';
+}
+
+function updateToggleIcon() {
+  if (!themeToggle) return;
+  const icons = {
+    default: '🌅', dark: '🌙', sudani: '🇸🇩', advertising: '📢',
+    mens: '👔', kids: '🧸', fashion: '💎', gold: '👑',
+    rose: '🌹', natural: '🌿', ocean: '🌊', classic: '🏛️'
+  };
+  themeToggle.innerHTML = icons[currentTheme] || '🌅';
 }
 
 themeToggle.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
+  const next = getNextTheme(currentTheme);
+  applyTheme(next);
+  updateToggleIcon();
 });
 
 /* ================= Mobile Menu ================= */
@@ -424,6 +456,7 @@ async function subscribePush(reg) {
 }
 
 /* ================= Init ================= */
+loadSiteTheme();
 loadCategoriesAndProducts();
 loadOffers();
 loadSocialLinks();
