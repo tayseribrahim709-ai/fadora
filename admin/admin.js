@@ -510,6 +510,90 @@ document.getElementById('sendNotifBtn')?.addEventListener('click', async () => {
   }
 });
 
+// ============ Popup Ads ============
+let popups = [];
+let currentPopupId = null;
+
+async function loadPopups() {
+  try {
+    popups = await api('GET', '/api/admin/popups');
+    renderPopups();
+  } catch { popups = []; renderPopups(); }
+}
+
+function renderPopups() {
+  const tbody = document.getElementById('popupsTableBody');
+  if (!tbody) return;
+  if (!popups.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-lighter);padding:40px">لا توجد إعلانات بعد</td></tr>';
+    return;
+  }
+  tbody.innerHTML = popups.map(p => `
+    <tr>
+      <td>${p.image ? `<img src="${p.image}" class="small-img" onerror="this.style.display='none'">` : '—'}</td>
+      <td style="font-weight:600">${p.title}</td>
+      <td style="color:var(--text-light);font-size:0.9rem">${p.description || '—'}</td>
+      <td><span class="badge ${p.active ? 'badge-active' : 'badge-inactive'}">${p.active ? 'فعال' : 'معطل'}</span></td>
+      <td class="actions-cell">
+        <button class="btn-sm btn-edit" onclick="editPopup('${p.id}')">تعديل</button>
+        <button class="btn-sm btn-delete" onclick="deletePopup('${p.id}')">حذف</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function editPopup(id) {
+  const p = popups.find(x => x.id === id);
+  if (!p) return;
+  currentPopupId = id;
+  document.getElementById('popupModalTitle').textContent = 'تعديل إعلان منبثق';
+  document.getElementById('popupId').value = id;
+  document.getElementById('popupTitle').value = p.title;
+  document.getElementById('popupDesc').value = p.description || '';
+  document.getElementById('popupLink').value = p.link || '';
+  document.getElementById('popupActive').checked = p.active;
+  document.getElementById('popupModal').classList.add('show');
+}
+
+function deletePopup(id) {
+  if (!confirm('تأكيد حذف الإعلان؟')) return;
+  api('DELETE', '/api/popups/' + id).then(() => { loadPopups(); showToast('تم الحذف'); }).catch(() => showToast('فشل الحذف', true));
+}
+
+document.getElementById('addPopupBtn')?.addEventListener('click', () => {
+  currentPopupId = null;
+  document.getElementById('popupModalTitle').textContent = 'إضافة إعلان منبثق';
+  document.getElementById('popupForm').reset();
+  document.getElementById('popupId').value = '';
+  document.getElementById('popupActive').checked = true;
+  document.getElementById('popupModal').classList.add('show');
+});
+
+document.getElementById('popupModalClose')?.addEventListener('click', () => {
+  document.getElementById('popupModal').classList.remove('show');
+});
+
+document.getElementById('popupForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData();
+  fd.append('title', document.getElementById('popupTitle').value);
+  fd.append('description', document.getElementById('popupDesc').value);
+  fd.append('link', document.getElementById('popupLink').value);
+  fd.append('active', document.getElementById('popupActive').checked);
+  const fileInput = document.getElementById('popupImage');
+  if (fileInput.files[0]) fd.append('image', fileInput.files[0]);
+  try {
+    if (currentPopupId) {
+      await fetch('/api/popups/' + currentPopupId, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token }, body: fd });
+    } else {
+      await fetch('/api/popups', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token }, body: fd });
+    }
+    showToast('تم حفظ الإعلان');
+    document.getElementById('popupModal').classList.remove('show');
+    loadPopups();
+  } catch { showToast('فشل الحفظ', true); }
+});
+
 // ============ Subscribe to Push ============
 async function subscribePush() {
   if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
@@ -637,4 +721,4 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 
 // ============ Init ============
 checkAuth();
-if (token) { loadAll(); loadCategories(); loadSettings(); loadReports(); loadTheme(); subscribePush(); }
+if (token) { loadAll(); loadCategories(); loadSettings(); loadReports(); loadTheme(); loadPopups(); subscribePush(); }

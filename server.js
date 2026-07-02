@@ -51,6 +51,7 @@ async function initPG() {
   await pgQuery(`CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, type TEXT, url TEXT, title TEXT, created_at TEXT)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS orders (id TEXT PRIMARY KEY, customer TEXT, phone TEXT, products JSONB DEFAULT '[]', total TEXT, status TEXT DEFAULT 'pending', note TEXT DEFAULT '', created_at TEXT)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS push_subscriptions (id SERIAL PRIMARY KEY, endpoint TEXT UNIQUE, data JSONB)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS popups (id TEXT PRIMARY KEY, title TEXT, description TEXT, image TEXT, link TEXT, active BOOLEAN DEFAULT true, created_at TEXT)`);
 
   const adminCount = await pgQuery('SELECT COUNT(*) FROM admin');
   if (parseInt(adminCount.rows[0].count) === 0) {
@@ -650,6 +651,85 @@ app.post('/api/send-notification', authMiddleware, async (req, res) => {
     })
   ));
   res.json({ success: true, sent: results.filter(r => r.status === 'fulfilled').length, total: subscriptions.length });
+});
+
+// ============ Popup Ads Routes ============
+app.get('/api/popups', async (req, res) => {
+  try {
+    if (USE_PG) {
+      const r = await pgQuery("SELECT id, title, description, image, link, active FROM popups WHERE active=true ORDER BY created_at DESC");
+      return res.json(r.rows);
+    }
+    const db = readDB();
+    res.json((db.popups || []).filter(p => p.active));
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.get('/api/admin/popups', authMiddleware, async (req, res) => {
+  try {
+    if (USE_PG) {
+      const r = await pgQuery("SELECT * FROM popups ORDER BY created_at DESC");
+      return res.json(r.rows);
+    }
+    const db = readDB();
+    res.json(db.popups || []);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.post('/api/popups', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const popup = {
+      id: uuidv4().slice(0, 8),
+      title: req.body.title,
+      description: req.body.description || '',
+      image: req.file ? '/uploads/images/' + req.file.filename : (req.body.image || ''),
+      link: req.body.link || '',
+      active: req.body.active !== 'false',
+      createdAt: new Date().toISOString()
+    };
+    if (USE_PG) {
+      await pgQuery("INSERT INTO popups (id, title, description, image, link, active, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7)", [popup.id, popup.title, popup.description, popup.image, popup.link, popup.active, popup.createdAt]);
+      return res.json(popup);
+    }
+    const db = readDB();
+    if (!db.popups) db.popups = [];
+    db.popups.push(popup);
+    writeDB(db);
+    res.json(popup);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.put('/api/popups/:id', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (USE_PG) {
+      const existing = await pgQuery("SELECT image FROM popups WHERE id=$1", [id]);
+      if (!existing.rows.length) return res.status(404).json({ error: 'غير موجود' });
+      const image = req.file ? '/uploads/images/' + req.file.filename : (req.body.image || existing.rows[0].image);
+      await pgQuery("UPDATE popups SET title=$1, description=$2, image=$3, link=$4, active=$5 WHERE id=$6", [req.body.title, req.body.description || '', image, req.body.link || '', req.body.active !== 'false', id]);
+      return res.json({ id: id, ...req.body, image: image });
+    }
+    const db = readDB();
+    const idx = (db.popups || []).findIndex(p => p.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'غير موجود' });
+    db.popups[idx] = { ...db.popups[idx], ...req.body, image: req.file ? '/uploads/images/' + req.file.filename : (req.body.image || db.popups[idx].image) };
+    writeDB(db);
+    res.json(db.popups[idx]);
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+app.delete('/api/popups/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (USE_PG) {
+      await pgQuery("DELETE FROM popups WHERE id=$1", [id]);
+      return res.json({ success: true });
+    }
+    const db = readDB();
+    db.popups = (db.popups || []).filter(p => p.id !== id);
+    writeDB(db);
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
 // ============ Start Server ============

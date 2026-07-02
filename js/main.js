@@ -470,6 +470,55 @@ loadCategoriesAndProducts();
 loadOffers();
 loadSocialLinks();
 loadPaymentDetails();
+loadPopupAds();
+
+/* ================= Popup Ads ================= */
+let popupShown = false;
+
+async function loadPopupAds() {
+  if (window.location.protocol === 'file:' || popupShown) return;
+  try {
+    const res = await fetch('/api/popups');
+    if (!res.ok) return;
+    const ads = await res.json();
+    if (!ads.length) return;
+    popupShown = true;
+    showPopupAd(ads[0]);
+  } catch {}
+}
+
+function showPopupAd(ad) {
+  const existing = document.querySelector('.popup-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'popup-overlay';
+
+  const hasLink = ad.link && ad.link.startsWith('http');
+  const imgHtml = ad.image ? `<img src="${ad.image}" alt="${ad.title}" onerror="this.remove()">` : '';
+  const linkBtn = hasLink ? `<a href="${ad.link}" target="_blank" rel="noopener">${window.t ? window.t('heroBtn') || 'اكتشف الآن' : 'اكتشف الآن'} ←</a>` : '';
+
+  overlay.innerHTML = `
+    <div class="popup-card">
+      <button class="popup-close" onclick="this.closest('.popup-overlay').remove()">✕</button>
+      ${imgHtml}
+      <div class="popup-body">
+        <h2>${ad.title}</h2>
+        ${ad.description ? `<p>${ad.description}</p>` : ''}
+        <div class="popup-actions">
+          ${linkBtn}
+          <button onclick="this.closest('.popup-overlay').remove()">${window.t ? window.t('allRights')?.includes('جميع') ? 'إغلاق' : 'Close' : 'إغلاق'}</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+}
 
 /* ================= Smooth scroll for nav links (fallback) ================= */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

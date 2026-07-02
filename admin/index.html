@@ -46,6 +46,7 @@
           <button class="nav-btn active" data-tab="dashboard">&#128202; لوحة التحكم</button>
           <button class="nav-btn" data-tab="products">&#128722; المنتجات</button>
           <button class="nav-btn" data-tab="offers">&#127881; العروض</button>
+          <button class="nav-btn" data-tab="popups">&#128240; إعلانات</button>
           <button class="nav-btn" data-tab="orders">&#128230; الطلبات</button>
           <button class="nav-btn" data-tab="media">&#128247; الوسائط</button>
           <button class="nav-btn" data-tab="reports">&#128200; التقارير</button>
@@ -124,6 +125,29 @@
           <button class="btn-admin" id="addMediaBtn">+ رفع ملف</button>
         </div>
         <div class="media-grid" id="mediaGrid"></div>
+      </section>
+
+      <!-- Popups Tab -->
+      <section class="admin-tab" id="tab-popups">
+        <div class="tab-header">
+          <h2>إدارة الإعلانات المنبثقة</h2>
+          <button class="btn-admin" id="addPopupBtn">+ إضافة إعلان</button>
+        </div>
+        <p style="color:var(--text-light);margin-bottom:16px;font-size:0.95rem">الإعلانات المنبثقة تظهر للزوار عند فتح الموقع. يمكن التحكم بظهورها وإخفائها.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>العنوان</th>
+                <th>الوصف</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="popupsTableBody"></tbody>
+          </table>
+        </div>
       </section>
 
       <!-- Orders Tab -->
@@ -272,6 +296,30 @@
           </label>
           <input type="file" id="offerImage" accept="image/*">
         </div>
+        <button type="submit" class="btn-admin">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="modal" id="popupModal">
+    <div class="modal-content">
+      <span class="modal-close" id="popupModalClose">&times;</span>
+      <h3 id="popupModalTitle">إضافة إعلان منبثق</h3>
+      <form id="popupForm">
+        <input type="hidden" id="popupId">
+        <input type="text" id="popupTitle" placeholder="عنوان الإعلان" required>
+        <textarea id="popupDesc" rows="3" placeholder="وصف الإعلان"></textarea>
+        <div class="form-row">
+          <input type="text" id="popupLink" placeholder="رابط عند الضغط (اختياري)">
+        </div>
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="popupActive" checked> <span style="color:var(--text-light);font-size:0.9rem">فعال</span>
+          </label>
+          <input type="file" id="popupImage" accept="image/*">
+        </div>
+        <p class="form-note">صورة الإعلان (اختياري - 800×600px مناسبة)</p>
         <button type="submit" class="btn-admin">حفظ</button>
       </form>
     </div>
