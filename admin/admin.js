@@ -517,7 +517,7 @@ async function subscribePush() {
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array('BEl62iZR8e8mJp8kRXKJQwZx0g9KzgJmXq8vZ6f5d3s2a1b0c9d8e7f6g5h4i3j2k1l0m9n8o7p6q5r4s3t2u1v0w')
+      applicationServerKey: urlBase64ToUint8Array('BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM')
     });
     await fetch('/api/subscribe', {
       method: 'POST',

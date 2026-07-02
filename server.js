@@ -7,6 +7,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { Pool } = require('pg');
+const webpush = require('web-push');
+
+const VAPID_PUBLIC_KEY = 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';
+const VAPID_PRIVATE_KEY = '0b9zUtKHbPTjJFqlz2Bbazt8fcTUSMJCdzVnTNn3QPc';
+webpush.setVapidDetails('mailto:faddo87@gmail.com', VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -624,6 +629,27 @@ app.get('/api/stats', authMiddleware, async (req, res) => {
     const videoCount = fs.existsSync(videosDir) ? fs.readdirSync(videosDir).length : 0;
     res.json({ products, offers, media, images: imageCount, videos: videoCount, categories, orders });
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
+});
+
+// ============ Push Notifications ============
+const subscriptions = [];
+
+app.post('/api/subscribe', (req, res) => {
+  const sub = req.body;
+  const exists = subscriptions.some(s => s.endpoint === sub.endpoint);
+  if (!exists) subscriptions.push(sub);
+  res.json({ success: true });
+});
+
+app.post('/api/send-notification', authMiddleware, async (req, res) => {
+  const { title, body, url } = req.body;
+  const payload = JSON.stringify({ title: title || 'Fadora', body: body || '', url: url || '/' });
+  const results = await Promise.allSettled(subscriptions.map(sub =>
+    webpush.sendNotification(sub, payload).catch(e => {
+      if (e.statusCode === 410) { const idx = subscriptions.indexOf(sub); if (idx >= 0) subscriptions.splice(idx, 1); }
+    })
+  ));
+  res.json({ success: true, sent: results.filter(r => r.status === 'fulfilled').length, total: subscriptions.length });
 });
 
 // ============ Start Server ============

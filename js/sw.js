@@ -48,6 +48,8 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
+const VAPID_PUBLIC_KEY = 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';
+
 // Push notification
 self.addEventListener('push', (event) => {
   const data = event.data?.json() || { title: 'عرض جديد', body: 'تفقدي أحدث العروض من Fadora' };
