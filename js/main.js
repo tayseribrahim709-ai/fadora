@@ -6,6 +6,8 @@ if (langToggle) {
     const next = cur === 'ar' ? 'en' : 'ar';
     window.setLang(next);
     langToggle.textContent = window.t('language');
+    // Re-render dynamic content with new language
+    if (categories.length) renderProductTabs();
   });
 }
 
@@ -145,7 +147,7 @@ function renderProductTabs() {
   const sorted = [...categories].sort((a, b) => a.order - b.order);
 
   tabsContainer.innerHTML = sorted.map((c, i) =>
-    `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-tab="${c.id}">${c.name}</button>`
+    `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-tab="${c.id}">${window.t('category_' + c.id) || c.name}</button>`
   ).join('');
 
   containers.innerHTML = sorted.map((c, i) =>
