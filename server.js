@@ -73,6 +73,21 @@ async function initPG() {
     await pgQuery('INSERT INTO settings (data) VALUES ($1)', [JSON.stringify(seed.settings || {})]);
     console.log('✓ Settings row inserted');
   }
+  // Re-seed products/categories/offers if empty (fresh DB)
+  const prodCount = await pgQuery('SELECT COUNT(*) FROM products');
+  if (parseInt(prodCount.rows[0].count) === 0) {
+    const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    for (const c of (seed.categories || [])) {
+      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.id, c.name]);
+    }
+    for (const p of (seed.products || [])) {
+      await pgQuery('INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING', [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
+    }
+    for (const o of (seed.offers || [])) {
+      await pgQuery('INSERT INTO offers (id, title, description, image, active, created_at) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING', [o.id, o.title, o.description, o.image, o.active, o.createdAt]);
+    }
+    console.log('✓ Products re-seeded');
+  }
 }
 
 // ============ JSON fallback (local dev) ============
