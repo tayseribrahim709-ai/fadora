@@ -66,6 +66,13 @@ async function initPG() {
     }
     console.log('✓ PostgreSQL seeded from db.json');
   }
+  // Ensure settings row exists even if admin already existed
+  const settingsCount = await pgQuery('SELECT COUNT(*) FROM settings');
+  if (parseInt(settingsCount.rows[0].count) === 0) {
+    const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    await pgQuery('INSERT INTO settings (data) VALUES ($1)', [JSON.stringify(seed.settings || {})]);
+    console.log('✓ Settings row inserted');
+  }
 }
 
 // ============ JSON fallback (local dev) ============
