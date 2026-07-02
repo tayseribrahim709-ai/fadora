@@ -159,7 +159,7 @@ function renderProductCards(products) {
     return `
       <div class="product-card">
         <div class="product-img">
-          <img src="${img}" alt="${p.name}" class="product-svg">
+          <img src="${img}" alt="${p.name}" class="product-svg" loading="lazy" onerror="this.src='images/product-${p.category}.svg'">
         </div>
         <div class="product-info">
           <h3>${p.name}</h3>
