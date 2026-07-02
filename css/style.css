@@ -510,6 +510,7 @@ section {
   justify-content: center;
   position: relative;
   padding: 20px;
+  background: linear-gradient(135deg, var(--primary-light, #FFE4E0), var(--secondary-light, #E0F2F1));
 }
 
 .product-svg {
