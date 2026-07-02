@@ -59,7 +59,7 @@
       "description": "كريم نضارة نهاري مضاد للتجاعيد 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد نوفيج كريم نهاري 50 مل"
     },
     {
@@ -68,7 +68,7 @@
       "description": "كريم نضارة ليلي مغذي 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد نوفيج كريم ليلي 50 مل"
     },
     {
@@ -77,7 +77,7 @@
       "description": "سيروم مضاد للتجاعيد 30 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد نوفيج سيروم 30 مل"
     },
     {
@@ -86,7 +86,7 @@
       "description": "كريم معالجة لمنطقة العين 15 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد نوفيج كريم عين 15 مل"
     },
     {
@@ -95,7 +95,7 @@
       "description": "غسول وجه منعش 150 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد أوبتيمالز غسول وجه 150 مل"
     },
     {
@@ -104,7 +104,7 @@
       "description": "تونر منعش للوجه 150 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد أوبتيمالز تونر 150 مل"
     },
     {
@@ -113,7 +113,7 @@
       "description": "مرطب ترطيب عميق 50 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد أوبتيمالز مرطب 50 مل"
     },
     {
@@ -122,7 +122,7 @@
       "description": "ماسك مرطب بالألوفيرا 75 مل",
       "price": "",
       "category": "face",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-face.svg",
       "whatsapp": "أريد ماسك الألوفيرا 75 مل"
     },
     {
@@ -131,7 +131,7 @@
       "description": "شامبو للشعر المصبوغ 250 مل",
       "price": "",
       "category": "hair",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-hair.svg",
       "whatsapp": "أريد شامبو ترو كلر 250 مل"
     },
     {
@@ -140,7 +140,7 @@
       "description": "بلسم للشعر المصبوغ 200 مل",
       "price": "",
       "category": "hair",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-hair.svg",
       "whatsapp": "أريد بلسم ترو كلر 200 مل"
     },
     {
@@ -149,7 +149,7 @@
       "description": "شامبو مغذي بالحليب والعسل 250 مل",
       "price": "",
       "category": "hair",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-hair.svg",
       "whatsapp": "أريد شامبو حليب وعسل 250 مل"
     },
     {
@@ -158,7 +158,7 @@
       "description": "ماسك مغذي للشعر 200 مل",
       "price": "",
       "category": "hair",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-hair.svg",
       "whatsapp": "أريد ماسك حليب وعسل 200 مل"
     },
     {
@@ -167,7 +167,7 @@
       "description": "زيت أرغان مغذي للشعر 50 مل",
       "price": "",
       "category": "hair",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-hair.svg",
       "whatsapp": "أريد زيت الأرغان للشعر 50 مل"
     },
     {
@@ -176,7 +176,7 @@
       "description": "عطر نسائي فرنسي 50 مل - Eclat",
       "price": "",
       "category": "perfume",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-perfume.svg",
       "whatsapp": "أريد عطر إكلات 50 مل"
     },
     {
@@ -185,7 +185,7 @@
       "description": "عطر نسائي زهري 50 مل - Volare",
       "price": "",
       "category": "perfume",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-perfume.svg",
       "whatsapp": "أريد عطر فولاري 50 مل"
     },
     {
@@ -194,7 +194,7 @@
       "description": "عطر نسائي جذاب 50 مل - Lucky Lady",
       "price": "",
       "category": "perfume",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-perfume.svg",
       "whatsapp": "أريد عطر لاكي ليدي 50 مل"
     },
     {
@@ -203,7 +203,7 @@
       "description": "عطر نسائي منعش 50 مل - Paradise",
       "price": "",
       "category": "perfume",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-perfume.svg",
       "whatsapp": "أريد عطر بارادايس 50 مل"
     },
     {
@@ -212,7 +212,7 @@
       "description": "عطر نسائي فاخر 50 مل - Giordani Gold",
       "price": "",
       "category": "perfume",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-perfume.svg",
       "whatsapp": "أريد عطر جيورداني 50 مل"
     },
     {
@@ -221,7 +221,7 @@
       "description": "لوشن مرطب للجسم بالألوفيرا 200 مل",
       "price": "",
       "category": "body",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-body.svg",
       "whatsapp": "أريد لوشن الجسم 200 مل"
     },
     {
@@ -230,7 +230,7 @@
       "description": "زبدة جسم مغذية 200 مل",
       "price": "",
       "category": "body",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-body.svg",
       "whatsapp": "أريد زبدة الجسم 200 مل"
     },
     {
@@ -239,7 +239,7 @@
       "description": "كريم مغذي لليدين 75 مل",
       "price": "",
       "category": "body",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-body.svg",
       "whatsapp": "أريد كريم اليدين 75 مل"
     },
     {
@@ -248,7 +248,7 @@
       "description": "جل استحمام مغذي 250 مل",
       "price": "",
       "category": "body",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-body.svg",
       "whatsapp": "أريد جل استحمام حليب وعسل 250 مل"
     },
     {
@@ -257,7 +257,7 @@
       "description": "شامبو منعش للرجال 250 مل - Oriflame",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد شامبو رجالي أوريفليم"
     },
     {
@@ -266,7 +266,7 @@
       "description": "جل حلاقة مهدئ للبشرة 150 مل",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد جل حلاقة أوريفليم"
     },
     {
@@ -275,7 +275,7 @@
       "description": "عطر رجالي فاخر 75 مل - Giordani Gold",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد عطر جيورداني جولد رجالي"
     },
     {
@@ -284,7 +284,7 @@
       "description": "كريم مهدئ ومنعش بعد الحلاقة 75 مل",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد كريم ما بعد الحلاقة"
     },
     {
@@ -293,7 +293,7 @@
       "description": "سبراي عطر رجالي منعش 100 مل",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد سبراي عطر رجالي"
     },
     {
@@ -302,7 +302,7 @@
       "description": "مزيل عرق رول أون للرجال 50 مل",
       "price": "",
       "category": "men",
-      "image": "images/fadora-logo.jpeg",
+      "image": "images/product-men.svg",
       "whatsapp": "أريد مزيل عرق رجالي أوريفليم"
     }
   ],
