@@ -155,7 +155,7 @@ function renderProductTabs() {
 function renderProductCards(products) {
   return products.map(p => {
     const msg = encodeURIComponent(p.whatsapp || `أريد ${p.name}`);
-    const img = p.image || PRODUCT_ICONS[p.category] || 'images/product-cream.svg';
+    const img = p.image || PRODUCT_ICONS[p.category] || 'images/products/face-1.jpg';
     return `
       <div class="product-card">
         <div class="product-img">
