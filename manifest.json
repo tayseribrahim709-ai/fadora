@@ -2,7 +2,7 @@
   "name": "Fadora - صنع بكل حب",
   "short_name": "Fadora",
   "description": "شريكة أوريفليم للعناية بالبشرة والشعر والعطور - صنع بكل حب",
-  "start_url": "/",
+  "start_url": "/?v=2",
   "display": "standalone",
   "background_color": "#FFF5F3",
   "theme_color": "#FF6F61",

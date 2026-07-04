@@ -42,20 +42,30 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request).then(response => {
+  const url = new URL(event.request.url);
+  const isAsset = ASSETS.some(a => url.pathname === a || url.pathname.startsWith('/images/') || url.pathname.startsWith('/uploads/'));
+
+  if (isAsset) {
+    // Cache-first for static assets
+    event.respondWith(
+      caches.match(event.request).then(cached => cached || fetch(event.request).then(res => {
+        return caches.open(CACHE_NAME).then(cache => { cache.put(event.request, res.clone()); return res; });
+      }))
+    );
+  } else {
+    // Network-first for HTML, API, etc.
+    event.respondWith(
+      fetch(event.request).then(res => {
         return caches.open(CACHE_NAME).then(cache => {
-          if (event.request.url.startsWith(self.location.origin)) {
-            cache.put(event.request, response.clone());
-          }
-          return response;
+          if (event.request.method === 'GET' && res.ok) cache.put(event.request, res.clone());
+          return res;
         });
-      }).catch(() => {
+      }).catch(() => caches.match(event.request).then(cached => {
         if (event.request.mode === 'navigate') return caches.match('/');
-      });
-    })
-  );
+        return cached;
+      }))
+    );
+  }
 });
 
 const VAPID_PUBLIC_KEY = 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';

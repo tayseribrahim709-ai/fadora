@@ -335,7 +335,7 @@ document.querySelectorAll('.about-card, .product-card, .service-card, .testimoni
 /* ================= PWA: Service Worker & Push Notifications ================= */
 if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('js/sw.js').then(reg => {
+    navigator.serviceWorker.register('js/sw.js', { updateViaCache: 'none' }).then(reg => {
       console.log('✓ PWA: Service Worker registered');
       if ('Notification' in window && Notification.permission === 'default') {
         Notification.requestPermission().then(perm => {
