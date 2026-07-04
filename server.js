@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { Pool } = require('pg');
 const webpush = require('web-push');
+const nodemailer = require('nodemailer');
 
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || 'BDitqIMvkhQtLRSY-UsSQpo_4Q0fHRa1R80n7suB0VbWVcXmnVJdrifF2mvsDzfQtSlQuI2aLp2nsWl8Q3Q-HSM';
 const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '0b9zUtKHbPTjJFqlz2Bbazt8fcTUSMJCdzVnTNn3QPc';
@@ -18,6 +19,44 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'fadora-secret-key-2026';
 const DB_PATH = path.join(__dirname, 'data', 'db.json');
 const USE_PG = !!process.env.DATABASE_URL;
+
+// Email transporter for order notifications
+const EMAIL_USER = process.env.EMAIL_USER || '';
+const EMAIL_PASS = process.env.EMAIL_PASS || '';
+const ADMIN_EMAIL = 'faddo87@gmail.com';
+let transporter = null;
+if (EMAIL_USER && EMAIL_PASS) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: EMAIL_USER, pass: EMAIL_PASS }
+  });
+}
+
+async function sendNotification(order) {
+  const msg = `🛒 طلب جديد من Fadora
+━━━━━━━━━━━━━━━
+👤 العميل: ${order.customer}
+📞 الجوال: ${order.phone}
+📦 المنتجات: ${(order.products || []).map(p => p.name || p).join(', ')}
+💰 الإجمالي: ${order.total || '—'}
+📝 ملاحظات: ${order.note || '—'}
+🆔 رقم الطلب: ${order.id}
+━━━━━━━━━━━━━━━
+⏰ ${order.createdAt}`;
+
+  // Send email if configured
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: EMAIL_USER,
+        to: ADMIN_EMAIL,
+        subject: `🛒 طلب جديد من ${order.customer}`,
+        text: msg
+      });
+      console.log('✓ Email sent for order', order.id);
+    } catch (e) { console.log('Email failed:', e.message); }
+  }
+}
 
 app.use(cors());
 app.use(express.json());
@@ -604,7 +643,9 @@ app.post('/api/orders', async (req, res) => {
       note: req.body.note || '',
       createdAt: new Date().toISOString().split('T')[0]
     };
-    res.json(await createOrder(order));
+    const saved = await createOrder(order);
+    sendNotification(saved);
+    res.json(saved);
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
