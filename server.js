@@ -44,7 +44,21 @@ async function sendNotification(order) {
 ━━━━━━━━━━━━━━━
 ⏰ ${order.createdAt}`;
 
-  // Send email if configured
+  // 1) Send to WhatsApp via CallMeBot if API key is configured
+  const whatsappApiKey = process.env.WM_API_KEY;
+  if (whatsappApiKey) {
+    try {
+      const settings = await getSettings();
+      const waNumber = (settings.social?.whatsapp || '249924643848').replace(/[^0-9]/g, '');
+      const url = `https://api.callmebot.com/whatsapp.php?phone=${waNumber}&text=${encodeURIComponent(msg)}&apikey=${whatsappApiKey}`;
+      const r = await fetch(url);
+      const text = await r.text();
+      if (text.includes('OK')) console.log('✓ WhatsApp sent for order', order.id);
+      else console.log('WhatsApp API:', text);
+    } catch (e) { console.log('WhatsApp failed:', e.message); }
+  }
+
+  // 2) Send email if configured
   if (transporter) {
     try {
       await transporter.sendMail({
