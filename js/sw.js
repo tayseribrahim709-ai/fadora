@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fadora-v1';
+const CACHE_NAME = 'fadora-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -12,7 +12,12 @@ const ASSETS = [
   '/admin/admin.js',
   '/images/fadora-logo.svg',
   '/images/fadora-logo-full.svg',
-  '/images/product-oriflame.svg'
+  '/images/product-oriflame.svg',
+  '/images/product-face.svg',
+  '/images/product-hair.svg',
+  '/images/product-perfume.svg',
+  '/images/product-body.svg',
+  '/images/product-men.svg'
 ];
 
 self.addEventListener('install', (event) => {
