@@ -316,22 +316,51 @@ let orders = [];
 function renderOrders() {
   const tbody = document.getElementById('ordersTableBody');
   if (!tbody) return;
-  tbody.innerHTML = orders.map((o, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${o.customer}</td>
-      <td>${o.phone}</td>
-      <td>${Array.isArray(o.products) ? o.products.join(', ') : o.products}</td>
-      <td>${o.total || '—'}</td>
-      <td><span class="badge badge-${o.status}">${getStatusLabel(o.status)}</span></td>
-      <td>${o.note || '—'}</td>
-      <td>${o.createdAt || '—'}</td>
-      <td class="actions-cell">
-        <button class="btn-sm" onclick="editOrder('${o.id}')">تعديل</button>
-        <button class="btn-sm btn-sm-danger" onclick="deleteOrder('${o.id}')">حذف</button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = orders.map((o, i) => {
+    const prodList = Array.isArray(o.products) ? o.products.map(p => p.name || p).join(', ') : o.products;
+    const waMsg = encodeURIComponent(`🛒 طلب جديد من Fadora
+👤 العميل: ${o.customer}
+📞 الجوال: ${o.phone}
+📦 المنتجات: ${prodList}
+💰 الإجمالي: ${o.total || '—'}
+📝 ملاحظات: ${o.note || '—'}
+🆔 رقم الطلب: ${o.id}
+⏰ ${o.createdAt || '—'}`);
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${o.customer}</td>
+        <td>${o.phone}</td>
+        <td>${prodList}</td>
+        <td>${o.total || '—'}</td>
+        <td><span class="badge badge-${o.status}">${getStatusLabel(o.status)}</span></td>
+        <td>${o.note || '—'}</td>
+        <td>${o.createdAt || '—'}</td>
+        <td class="actions-cell">
+          <button class="btn-sm btn-sm-primary" onclick="sendOrderWA('${o.id}')">📱 واتساب</button>
+          <button class="btn-sm" onclick="editOrder('${o.id}')">تعديل</button>
+          <button class="btn-sm btn-sm-danger" onclick="deleteOrder('${o.id}')">حذف</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function sendOrderWA(id) {
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  const prodList = Array.isArray(o.products) ? o.products.map(p => p.name || p).join(', ') : o.products;
+  const waMsg = `🛒 طلب جديد من Fadora
+👤 العميل: ${o.customer}
+📞 الجوال: ${o.phone}
+📦 المنتجات: ${prodList}
+💰 الإجمالي: ${o.total || '—'}
+📝 ملاحظات: ${o.note || '—'}
+🆔 رقم الطلب: ${o.id}
+⏰ ${o.createdAt || '—'}`;
+  // Get WhatsApp number from the customer's phone field, or use business number
+  const num = o.phone ? o.phone.replace(/[^0-9]/g, '') : '249924643848';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(waMsg)}`, '_blank');
 }
 
 function getStatusLabel(status) {
