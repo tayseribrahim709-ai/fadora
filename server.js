@@ -791,6 +791,28 @@ app.delete('/api/popups/:id', authMiddleware, async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
+// ============ Re-seed (fix garbled data) ============
+app.post('/api/reseed', authMiddleware, async (req, res) => {
+  if (!USE_PG) return res.status(400).json({ error: 'Only for PostgreSQL' });
+  try {
+    const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8').replace(/^\uFEFF/, ''));
+    await pgQuery('DELETE FROM offers'); await pgQuery('DELETE FROM media');
+    await pgQuery('DELETE FROM popups');
+    for (const c of (seed.categories || [])) {
+      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.id, c.name]);
+    }
+    for (const p of (seed.products || [])) {
+      await pgQuery("INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING", [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
+    }
+    for (const o of (seed.offers || [])) {
+      await pgQuery("INSERT INTO offers (id, title, description, image, active, created_at) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING", [o.id, o.title, o.description, o.image, o.active, o.createdAt]);
+    }
+    await pgQuery("UPDATE settings SET data = $1 WHERE id = 1", [JSON.stringify(seed.settings || {})]);
+    console.log('✓ Re-seeded from db.json');
+    res.json({ success: true, message: 'تم إعادة تزويد البيانات بنجاح' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // ============ Start Server ============
 async function start() {
   if (USE_PG) {

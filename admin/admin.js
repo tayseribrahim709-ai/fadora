@@ -528,6 +528,22 @@ document.getElementById('saveSettingsBtn')?.addEventListener('click', async () =
   } catch {}
 });
 
+document.getElementById('reseedBtn')?.addEventListener('click', async () => {
+  if (!confirm('سيتم حذف جميع البيانات وإعادة تزويدها من الملف. هل أنت متأكد؟')) return;
+  const btn = document.getElementById('reseedBtn');
+  btn.textContent = '⏳ جاري...';
+  btn.disabled = true;
+  try {
+    await api('POST', '/api/reseed');
+    showToast('تم إعادة التزويد بنجاح');
+    loadAll();
+  } catch {
+    showToast('فشل إعادة التزويد', true);
+  }
+  btn.textContent = '🔄 إعادة تزويد البيانات';
+  btn.disabled = false;
+});
+
 // ============ Notification ============
 document.getElementById('sendNotifBtn')?.addEventListener('click', async () => {
   const title = document.getElementById('notifTitle').value;
