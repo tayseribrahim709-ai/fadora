@@ -107,7 +107,7 @@ async function pgQuery(text, params) {
 async function initPG() {
   await pgQuery(`CREATE TABLE IF NOT EXISTS settings (id SERIAL PRIMARY KEY, data JSONB NOT NULL DEFAULT '{}')`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS admin (id SERIAL PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL)`);
-  await pgQuery(`CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, key TEXT NOT NULL UNIQUE, name TEXT NOT NULL)`);
+  await pgQuery(`CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, key TEXT NOT NULL UNIQUE, name TEXT NOT NULL, "order" INTEGER DEFAULT 0)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT NOT NULL, description TEXT, price TEXT, category TEXT, image TEXT, whatsapp TEXT)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS offers (id TEXT PRIMARY KEY, title TEXT, description TEXT, image TEXT, active BOOLEAN DEFAULT true, created_at TEXT)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, type TEXT, url TEXT, title TEXT, created_at TEXT)`);
@@ -115,13 +115,20 @@ async function initPG() {
   await pgQuery(`CREATE TABLE IF NOT EXISTS push_subscriptions (id SERIAL PRIMARY KEY, endpoint TEXT UNIQUE, data JSONB)`);
   await pgQuery(`CREATE TABLE IF NOT EXISTS popups (id TEXT PRIMARY KEY, title TEXT, description TEXT, image TEXT, link TEXT, active BOOLEAN DEFAULT true, created_at TEXT)`);
 
+  // Migrations for existing tables
+  await pgQuery(`ALTER TABLE categories ADD COLUMN IF NOT EXISTS "order" INTEGER DEFAULT 0`);
+  const nullKeys = await pgQuery("SELECT id, name FROM categories WHERE key IS NULL");
+  for (const row of (nullKeys?.rows || [])) {
+    await pgQuery('DELETE FROM categories WHERE id = $1', [row.id]);
+  }
+
   const adminCount = await pgQuery('SELECT COUNT(*) FROM admin');
   if (parseInt(adminCount.rows[0].count) === 0) {
     const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
     await pgQuery('INSERT INTO admin (username, password) VALUES ($1, $2)', [seed.admin.username, seed.admin.password]);
     await pgQuery('INSERT INTO settings (data) VALUES ($1)', [JSON.stringify(seed.settings || {})]);
     for (const c of (seed.categories || [])) {
-      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.id, c.name]);
+      await pgQuery('INSERT INTO categories (key, name, "order") VALUES ($1, $2, $3) ON CONFLICT DO NOTHING', [c.id, c.name, c.order || 0]);
     }
     for (const p of (seed.products || [])) {
       await pgQuery('INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING', [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
@@ -146,7 +153,7 @@ async function initPG() {
   if (parseInt(prodCount.rows[0].count) === 0) {
     const seed = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
     for (const c of (seed.categories || [])) {
-      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.id, c.name]);
+      await pgQuery('INSERT INTO categories (key, name, "order") VALUES ($1, $2, $3) ON CONFLICT DO NOTHING', [c.id, c.name, c.order || 0]);
     }
     for (const p of (seed.products || [])) {
       await pgQuery('INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING', [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
@@ -208,7 +215,7 @@ async function updatePassword(hash) {
 
 async function getCategories() {
   if (USE_PG) {
-    const r = await pgQuery('SELECT key, name FROM categories ORDER BY id');
+    const r = await pgQuery('SELECT key AS id, name, "order" FROM categories ORDER BY "order"');
     return r.rows;
   }
   return readDB().categories || [];
@@ -799,7 +806,7 @@ app.post('/api/reseed', authMiddleware, async (req, res) => {
     await pgQuery('DELETE FROM offers'); await pgQuery('DELETE FROM media');
     await pgQuery('DELETE FROM popups');
     for (const c of (seed.categories || [])) {
-      await pgQuery('INSERT INTO categories (key, name) VALUES ($1, $2) ON CONFLICT DO NOTHING', [c.id, c.name]);
+      await pgQuery('INSERT INTO categories (key, name, "order") VALUES ($1, $2, $3) ON CONFLICT DO NOTHING', [c.id, c.name, c.order || 0]);
     }
     for (const p of (seed.products || [])) {
       await pgQuery("INSERT INTO products (id, name, description, price, category, image, whatsapp) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING", [p.id, p.name, p.description, p.price, p.category, p.image, p.whatsapp]);
