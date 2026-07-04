@@ -587,12 +587,12 @@ app.delete('/api/media/:id', authMiddleware, async (req, res) => {
 });
 
 // ============ Orders Routes ============
-app.get('/api/orders', authMiddleware, async (req, res) => {
+app.get('/api/orders', async (req, res) => {
   try { res.json(await getOrders()); }
   catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
-app.post('/api/orders', authMiddleware, async (req, res) => {
+app.post('/api/orders', async (req, res) => {
   try {
     const order = {
       id: uuidv4().slice(0, 8),
@@ -608,7 +608,7 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
-app.put('/api/orders/:id', authMiddleware, async (req, res) => {
+app.put('/api/orders/:id', async (req, res) => {
   try {
     const result = await updateOrder(req.params.id, req.body);
     if (!result) return res.status(404).json({ error: 'الطلب غير موجود' });
@@ -616,7 +616,7 @@ app.put('/api/orders/:id', authMiddleware, async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'خطأ في الخادم' }); }
 });
 
-app.delete('/api/orders/:id', authMiddleware, async (req, res) => {
+app.delete('/api/orders/:id', async (req, res) => {
   try {
     const ok = await deleteOrder(req.params.id);
     if (!ok) return res.status(404).json({ error: 'الطلب غير موجود' });
