@@ -358,9 +358,8 @@ function sendOrderWA(id) {
 📝 ملاحظات: ${o.note || '—'}
 🆔 رقم الطلب: ${o.id}
 ⏰ ${o.createdAt || '—'}`;
-  // Get WhatsApp number from the customer's phone field, or use business number
   const num = o.phone ? o.phone.replace(/[^0-9]/g, '') : '249924643848';
-  window.open(`https://wa.me/${num}?text=${encodeURIComponent(waMsg)}`, '_blank');
+  window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(waMsg)}`;
 }
 
 function getStatusLabel(status) {
