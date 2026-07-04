@@ -13,7 +13,6 @@ if (langToggle) {
     loadSocialLinks();
     loadPaymentDetails();
   });
-  });
 }
 
 /* ================= Theme System ================= */
