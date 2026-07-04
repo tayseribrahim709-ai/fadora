@@ -48,19 +48,26 @@ function getNextTheme(theme) {
 
 function updateToggleIcon() {
   if (!themeToggle) return;
-  const icons = {
-    default: '🌅', dark: '🌙', sudani: '🇸🇩', advertising: '📢',
-    mens: '👔', kids: '🧸', fashion: '💎', gold: '👑',
-    rose: '🌹', natural: '🌿', ocean: '🌊', classic: '🏛️'
+  const sun = themeToggle.querySelector('.sun-icon');
+  const moon = themeToggle.querySelector('.moon-icon');
+  if (sun) sun.style.display = currentTheme === 'dark' ? 'none' : '';
+  if (moon) moon.style.display = currentTheme === 'dark' ? '' : 'none';
+  const labels = {
+    default: 'الوضع النهاري', dark: 'الوضع الليلي', sudani: 'ثيم سوداني',
+    advertising: 'ثيم إعلاني', mens: 'ثيم رجالي', kids: 'ثيم أطفالي',
+    fashion: 'ثيم موضة', gold: 'ثيم ذهبي', rose: 'ثيم وردي',
+    natural: 'ثيم طبيعي', ocean: 'ثيم بحري', classic: 'ثيم كلاسيك'
   };
-  themeToggle.innerHTML = icons[currentTheme] || '🌅';
+  themeToggle.setAttribute('aria-label', labels[currentTheme] || 'تغيير الثيم');
 }
 
-themeToggle.addEventListener('click', () => {
-  const next = getNextTheme(currentTheme);
-  applyTheme(next);
-  updateToggleIcon();
-});
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const next = getNextTheme(currentTheme);
+    applyTheme(next);
+    updateToggleIcon();
+  });
+}
 
 /* ================= Mobile Menu ================= */
 const hamburger = document.getElementById('hamburger');

@@ -92,7 +92,9 @@ const i18n = {
     offer_o2_title: '💇‍♀️ بكج الشعر المثالي',
     offer_o2_desc: 'شامبو + بلسم + ماسك شعر معاً',
     offer_o3_title: '🧴 بكج العناية بالجسم',
-    offer_o3_desc: 'جل استحمام + لوشن + كريم يدين معاً'
+    offer_o3_desc: 'جل استحمام + لوشن + كريم يدين معاً',
+    offer_o4_title: '🌺 عطرين بسعر واحد',
+    offer_o4_desc: 'اشتري عطرين واحصلي على الثالث مجاناً!'
   },
   en: {
     siteName: 'Fadora',
@@ -188,6 +190,8 @@ const i18n = {
     offer_o2_desc: 'Shampoo + Conditioner + Hair Mask together',
     offer_o3_title: '🧴 Body Care Package',
     offer_o3_desc: 'Shower Gel + Lotion + Hand Cream together',
+    offer_o4_title: '🌺 Two Perfumes for One Price',
+    offer_o4_desc: 'Buy two perfumes get the third free!',
     prod_f1_name: 'Novage Day Cream',
     prod_f1_desc: 'Anti-aging day cream 50 ml',
     prod_f2_name: 'Novage Night Cream',
