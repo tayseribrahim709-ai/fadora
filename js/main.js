@@ -332,11 +332,37 @@ document.querySelectorAll('.about-card, .product-card, .service-card, .testimoni
   observer.observe(el);
 });
 
-/* ================= PWA: Service Worker & Push Notifications ================= */
+/* ================= PWA: Service Worker & Push Notifications + Auto Update ================= */
 if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+  let swReg = null;
+
+  function checkSWUpdate() {
+    if (!swReg) return;
+    swReg.update().catch(() => {});
+    // Also check version via message channel
+    if (swReg.active) {
+      const mc = new MessageChannel();
+      swReg.active.postMessage({ type: 'GET_VERSION' }, [mc.port2]);
+      mc.port1.onmessage = (e) => {
+        localStorage.setItem('swVersion', JSON.stringify(e.data));
+      };
+    }
+  }
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('js/sw.js', { updateViaCache: 'none' }).then(reg => {
+      swReg = reg;
       console.log('✓ PWA: Service Worker registered');
+      // Check for updates every 30 minutes
+      setInterval(checkSWUpdate, 30 * 60 * 1000);
+      // Also check on page focus
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) checkSWUpdate();
+      });
       if ('Notification' in window && Notification.permission === 'default') {
         Notification.requestPermission().then(perm => {
           if (perm === 'granted') subscribePush(reg);

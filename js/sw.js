@@ -1,4 +1,5 @@
-const CACHE_NAME = 'fadora-v2';
+const CACHE_NAME = 'fadora-v3';
+const SW_VERSION = 4;
 const ASSETS = [
   '/',
   '/index.html',
@@ -90,4 +91,10 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.openWindow(event.notification.data?.url || '/')
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'GET_VERSION') {
+    event.ports[0].postMessage({ version: SW_VERSION, cacheName: CACHE_NAME });
+  }
 });
